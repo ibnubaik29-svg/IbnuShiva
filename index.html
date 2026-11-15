@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jajanan Ibnu-Shiva</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* ============ RESET & VARIABEL ============ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --text: #111111;
+      --text-soft: #6b7280;
+      --border: #ececec;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.10);
+      --radius-sm: 14px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --accent: #111111;
+      --accent-text: #ffffff;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    /* ============ PARTIKEL FLOATING ============ */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.055);
+      animation: floatParticle linear infinite;
+      will-change: transform;
+    }
+
+    .particle:nth-child(odd) {
+      background: rgba(0, 0, 0, 0.035);
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    @keyframes floatParticle {
+      0%   { transform: translateY(0)     rotate(0deg)   scale(1); }
+      33%  { transform: translateY(-28px) rotate(120deg) scale(1.08); }
+      66%  { transform: translateY(-12px) rotate(240deg) scale(0.94); }
+      100% { transform: translateY(0)     rotate(360deg) scale(1); }
+    }
+
+    /* ============ LAYOUT UTAMA ============ */
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    /* ============ HEADER ============ */
+    .header {
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      margin-bottom: 22px;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+
+    .header-inner:hover { box-shadow: var(--shadow-md); }
+
+    .logo-wrap {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #f6f6f6;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .logo-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-fallback svg {
+      width: 24px;
+      height: 24px;
+      color: #6b7280;
+      stroke-width: 1.6;
+    }
+
+    .header-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-text h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.01em;
+      transition: all var(--transition);
+    }
+
+    .badge-open {
+      background: #f0fdf4;
+      color: var(--success);
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-closed {
+      background: #fef2f2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .icon-btn:hover { background: #f5f5f5; transform: scale(1.04); }
+    .icon-btn:active { transform: scale(0.96); }
+
+    /* ============ CARD UMUM ============ */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+
+    .card:hover { box-shadow: var(--shadow-md); }
+
+    /* ============ INFO CARD ============ */
+    .info-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .info-row svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-soft);
+      flex-shrink: 0;
+    }
+
+    .info-label {
+      font-size: 0.66rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .info-value {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-family: var(--font);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .btn svg { width: 16px; height: 16px; }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover { background: #f5f5f5; border-color: #d4d4d4; }
+
+    .btn-dark {
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+
+    .btn-dark:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-dark:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+    /* ============ PRODUK GRID ============ */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-soft);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition), transform var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+    .product-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #f7f7f7;
+      overflow: hidden;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-img { transform: scale(1.04); }
+
+    .product-img-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f7f7f7 0%, #ededed 100%);
+    }
+
+    .product-img-fallback svg {
+      width: 52px;
+      height: 52px;
+      color: #b0b0b0;
+      stroke-width: 1.4;
+    }
+
+    /* ---- CONTAINER BADGE (kiri atas) ---- */
+    .badges-tl {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 3;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+
+    .badge-soldout {
+      background: rgba(17, 17, 17, 0.88);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    }
+
+    .badge-bestseller {
+      background: #ffffff;
+      color: #111111;
+      border: 1.5px solid #111111;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2.5px 11px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.10);
+      animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .badge-bestseller svg {
+      width: 11px;
+      height: 11px;
+      stroke-width: 2.4;
+      animation: starPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes badgePop {
+      0%   { transform: scale(0.75); opacity: 0; }
+      100% { transform: scale(1);    opacity: 1; }
+    }
+
+    @keyframes starPulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.18); }
+    }
+
+    .soldout-toggle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+      z-index: 3;
+    }
+
+    .soldout-toggle input {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .product-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .product-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      margin-top: auto;
+    }
+
+    /* ============ SETTINGS PANEL ============ */
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .settings-overlay.active { opacity: 1; visibility: visible; }
+
+    .settings-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: min(420px, 92vw);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      z-index: 101;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: flex;
+      flex-direction: column;
+      border-radius: 24px 0 0 24px;
+    }
+
+    .settings-panel.active { transform: translateX(0); }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 12px;
+    }
+
+    .settings-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .settings-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 0 20px 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .tab-btn svg { width: 14px; height: 14px; }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .settings-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 20px 30px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeSlide 0.35s ease;
+    }
+
+    .tab-content.active { display: block; }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .field-group { margin-bottom: 18px; }
+
+    .field-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-soft);
+      margin-bottom: 7px;
+    }
+
+    .field-input,
+    .field-select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .field-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 36px;
+    }
+
+    .field-input:focus,
+    .field-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+    }
+
+    .result-box {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-top: 6px;
+    }
+
+    .result-box small {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      margin-top: 4px;
+      letter-spacing: 0;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toggle-row:last-child { border-bottom: none; }
+
+    .toggle-row span { font-size: 0.82rem; font-weight: 500; }
+
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #e0e0e0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      transition: transform var(--transition);
+    }
+
+    .switch input:checked + .slider { background: var(--accent); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+
+    .hint {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
+    /* ============ BESTSELLER LIST ============ */
+    .bestseller-section {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .bestseller-list {
+      max-height: 340px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 2px 14px;
+      background: #fafafa;
+      margin-top: 8px;
+    }
+
+    .bestseller-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .bestseller-item:last-child { border-bottom: none; }
+
+    .bestseller-item span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bestseller-item .switch {
+      transform: scale(0.92);
+      transform-origin: right center;
+    }
+
+    /* ============ LOCK SCREEN (PIN) ============ */
+    .lock-screen {
+      text-align: center;
+      padding: 26px 8px 20px;
+      animation: fadeSlide 0.35s ease;
+    }
+
+    .lock-icon-wrap {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: #f5f5f5;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+
+    .lock-icon-wrap svg { width: 28px; height: 28px; color: var(--text); }
+
+    .lock-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .lock-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-bottom: 20px;
+    }
+
+    .lock-input {
+      text-align: center;
+      font-size: 1.15rem;
+      letter-spacing: 0.45em;
+      padding: 12px 14px 12px 18px;
+      font-weight: 700;
+    }
+
+    .lock-input::placeholder { letter-spacing: 0.45em; color: #c8c8c8; }
+
+    .lock-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px;
+      font-size: 0.85rem;
+    }
+
+    .lock-error {
+      font-size: 0.75rem;
+      color: var(--danger);
+      margin-top: 12px;
+      min-height: 18px;
+      font-weight: 600;
+      display: block;
+    }
+
+    .lock-error.shake { animation: shake 0.4s ease; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    /* ============ CHECKOUT MODAL ============ */
+    .checkout-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s ease;
+    }
+
+    .checkout-overlay.active { opacity: 1; visibility: visible; }
+
+    .checkout-modal {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.94);
+      width: min(460px, calc(100vw - 28px));
+      max-height: 88vh;
+      background: var(--surface);
+      border-radius: 26px;
+      z-index: 201;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow-y: auto;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+    }
+
+    .checkout-modal.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .checkout-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      transition: all var(--transition);
+    }
+
+    .checkout-close:hover { background: #f0f0f0; transform: rotate(90deg); }
+    .checkout-close svg { width: 18px; height: 18px; }
+
+    .checkout-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #f7f7f7;
+      overflow: hidden;
+      border-radius: 26px 26px 0 0;
+      position: relative;
+    }
+
+    .checkout-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .checkout-img-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f7f7f7 0%, #ededed 100%);
+    }
+
+    .checkout-img-fallback svg {
+      width: 60px;
+      height: 60px;
+      color: #b0b0b0;
+      stroke-width: 1.4;
+    }
+
+    .checkout-body { padding: 20px 22px 24px; }
+
+    .checkout-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .checkout-body .field-group { margin-bottom: 14px; }
+
+    .price-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .price-chip {
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .price-chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .price-chip span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 10px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      transition: all var(--transition);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .price-chip input:checked + span {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--accent-text);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .price-chip span .price { font-size: 0.85rem; font-weight: 700; }
+
+    .buyer-name {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .buyer-name::placeholder { color: #b0b0b0; font-weight: 400; }
+
+    .buyer-name:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+    }
+
+    .checkout-body .btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    /* ============ RESPONSIF ============ */
+    @media (max-width: 600px) {
+      .app { padding: 14px 12px 50px; }
+      .header-inner { padding: 12px 14px; gap: 10px; }
+      .logo-wrap { width: 40px; height: 40px; border-radius: 12px; }
+      .logo-fallback svg { width: 20px; height: 20px; }
+      .header-text h1 { font-size: 0.92rem; }
+
+      .products-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .product-body { padding: 10px 12px 12px; gap: 10px; }
+      .product-name { font-size: 0.8rem; }
+      .btn-buy { padding: 9px 12px; font-size: 0.76rem; }
+
+      .badges-tl { top: 8px; left: 8px; gap: 4px; }
+      .badge-soldout { font-size: 0.62rem; padding: 3px 9px; }
+      .badge-bestseller { font-size: 0.62rem; padding: 2px 8px; }
+      .badge-bestseller svg { width: 10px; height: 10px; }
+      .soldout-toggle { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.6rem; }
+
+      .info-card { padding: 14px; }
+      .btn-outline { font-size: 0.74rem; padding: 8px 12px; }
+
+      .checkout-body { padding: 16px 18px 20px; }
+      .checkout-body h3 { font-size: 1rem; margin-bottom: 14px; }
+      .price-chip span { padding: 8px 8px; font-size: 0.68rem; }
+      .price-chip span .price { font-size: 0.78rem; }
+      .buyer-name { padding: 10px 12px; font-size: 0.78rem; }
+    }
+
+    @media (max-width: 380px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTIKEL FLOATING -->
+  <div class="particles" id="particles"></div>
+
+  <div class="app">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-wrap">
+          <img
+            src="https://ganga--link--ghhzdp9sv8hk.code.run/i/25dbt2hqmu"
+            alt="Logo Jajanan Ibnu-Shiva"
+            class="logo"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+          />
+          <div class="logo-fallback" style="display: none">
+            <i data-lucide="store"></i>
+          </div>
+        </div>
+        <div class="header-text">
+          <h1>Jajanan Ibnu-Shiva</h1>
+          <span class="badge badge-open" id="storeStatus">Toko Buka</span>
+        </div>
+        <button class="icon-btn" id="settingsBtn" aria-label="Pengaturan">
+          <i data-lucide="settings"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- INFO ALAMAT & MAPS -->
+    <section class="card info-card">
+      <div class="info-row">
+        <i data-lucide="map-pin"></i>
+        <div>
+          <p class="info-label">Alamat</p>
+          <p class="info-value">JL. SEPERTIGA MUARA, DUSUN BABAKAN, Sumurgede, Kec. Cilamaya Kulon, Karawang, Jawa Barat</p>
+        </div>
+      </div>
+      <a
+        href="https://maps.app.goo.gl/Gh2iWhrc5YCQG5Fh6?g_st=ac"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-outline"
+      >
+        <i data-lucide="navigation"></i> Buka di Maps
+      </a>
+    </section>
+
+    <!-- PRODUK -->
+    <h2 class="section-title">
+      <i data-lucide="cup-soda"></i> Menu Spesial
+    </h2>
+    <section class="products-grid" id="productsGrid"></section>
+  </div>
+
+  <!-- SETTINGS OVERLAY -->
+  <div class="settings-overlay" id="settingsOverlay"></div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+      <h2>Pengaturan</h2>
+      <button class="icon-btn" id="closeSettings" aria-label="Tutup">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="settings-tabs">
+      <button class="tab-btn active" data-tab="currency">
+        <i data-lucide="coins"></i> Mata Uang
+      </button>
+      <button class="tab-btn" data-tab="language">
+        <i data-lucide="languages"></i> Bahasa
+      </button>
+      <button class="tab-btn" data-tab="store">
+        <i data-lucide="store"></i> Toko
+      </button>
+    </div>
+
+    <div class="settings-body">
+      <!-- TAB MATA UANG -->
+      <div class="tab-content active" id="tab-currency">
+        <div class="field-group">
+          <label class="field-label">Jumlah (IDR)</label>
+          <input
+            type="number"
+            id="amountInput"
+            class="field-input"
+            value="10000"
+            min="1"
+          />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Dari</label>
+          <select id="fromCurrency" class="field-select">
+            <option value="IDR">IDR — Rupiah</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Ke</label>
+          <select id="toCurrency" class="field-select"></select>
+        </div>
+        <div class="result-box" id="conversionResult">
+          Rp 10.000
+          <small id="conversionRate">1 IDR = —</small>
+        </div>
+        <div class="field-group" style="margin-top: 18px">
+          <label class="field-label">Tampilkan Harga Produk Dalam</label>
+          <select id="displayCurrency" class="field-select"></select>
+          <p class="hint">Harga menu akan otomatis dikonversi ke mata uang ini.</p>
+        </div>
+      </div>
+
+      <!-- TAB BAHASA -->
+      <div class="tab-content" id="tab-language">
+        <div class="field-group">
+          <label class="field-label">Pilih Bahasa</label>
+          <select id="languageSelect" class="field-select">
+            <option value="id">Indonesia</option>
+            <option value="en">English</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+            <option value="th">ไทย</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="tl">Filipino</option>
+            <option value="my">မြန်မာ</option>
+            <option value="km">ខ្មែរ</option>
+            <option value="lo">ລາວ</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+            <option value="nl">Nederlands</option>
+            <option value="ru">Русский</option>
+            <option value="tr">Türkçe</option>
+            <option value="pl">Polski</option>
+            <option value="sv">Svenska</option>
+            <option value="da">Dansk</option>
+            <option value="no">Norsk</option>
+            <option value="fi">Suomi</option>
+            <option value="cs">Čeština</option>
+            <option value="sk">Slovenčina</option>
+            <option value="hu">Magyar</option>
+            <option value="ro">Română</option>
+            <option value="bg">Български</option>
+            <option value="hr">Hrvatski</option>
+            <option value="sr">Српски</option>
+            <option value="uk">Українська</option>
+            <option value="el">Ελληνικά</option>
+            <option value="he">עברית</option>
+            <option value="fa">فارسی</option>
+            <option value="ur">اردو</option>
+            <option value="bn">বাংলা</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="ml">മലയാളം</option>
+            <option value="sw">Kiswahili</option>
+            <option value="af">Afrikaans</option>
+            <option value="zu">isiZulu</option>
+            <option value="am">አማርኛ</option>
+            <option value="ha">Hausa</option>
+            <option value="yo">Yorùbá</option>
+            <option value="ig">Igbo</option>
+          </select>
+        </div>
+        <p class="hint">Perubahan bahasa akan diterapkan pada teks antarmuka secara otomatis.</p>
+      </div>
+
+      <!-- TAB TOKO (LOCKED) -->
+      <div class="tab-content" id="tab-store">
+        <!-- LOCK SCREEN -->
+        <div id="storeLockScreen" class="lock-screen">
+          <div class="lock-icon-wrap">
+            <i data-lucide="lock"></i>
+          </div>
+          <p class="lock-title" data-i18n>Pengaturan Toko Terkunci</p>
+          <p class="lock-subtitle" data-i18n>Masukkan kunci untuk melanjutkan</p>
+          <input
+            type="password"
+            id="storePinInput"
+            class="field-input lock-input"
+            placeholder="••••"
+            maxlength="8"
+            inputmode="numeric"
+            autocomplete="off"
+          />
+          <button class="btn btn-dark lock-btn" id="storePinSubmit">
+            <i data-lucide="unlock"></i> Buka
+          </button>
+          <span class="lock-error" id="storePinError"></span>
+        </div>
+
+        <!-- CONTENT (setelah unlock) -->
+        <div id="storeSettingsContent" style="display: none">
+          <div class="toggle-row">
+            <span data-i18n>Status Toko Buka</span>
+            <label class="switch">
+              <input type="checkbox" id="storeOpenToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <span data-i18n>Mode Admin (Atur Stok)</span>
+            <label class="switch">
+              <input type="checkbox" id="adminModeToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <p class="hint" style="margin-top: 10px" data-i18n>
+            Aktifkan Mode Admin untuk menandai produk yang sedang habis.
+          </p>
+
+          <!-- ATUR BESTSELLER -->
+          <div class="bestseller-section">
+            <p class="field-label">Atur Bestseller</p>
+            <p class="hint" style="margin-bottom: 4px">
+              Aktifkan badge Bestseller pada produk pilihanmu.
+            </p>
+            <div class="bestseller-list" id="bestsellerList"></div>
+            <p class="hint" style="margin-top: 10px">
+              <span id="bestsellerCount">0</span> produk ditandai Bestseller.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="checkout-overlay" id="checkoutOverlay"></div>
+  <div class="checkout-modal" id="checkoutModal">
+    <button class="checkout-close" id="checkoutClose" aria-label="Tutup">
+      <i data-lucide="x"></i>
+    </button>
+    <div class="checkout-img-wrap">
+      <img id="checkoutImg" alt="" />
+      <div class="checkout-img-fallback" id="checkoutFallback" style="display: none">
+        <i data-lucide="cup-soda"></i>
+      </div>
+    </div>
+    <div class="checkout-body">
+      <h3 id="checkoutName"></h3>
+      <div class="field-group">
+        <label class="field-label" data-i18n>Pilih Harga</label>
+        <div class="price-options" id="checkoutPriceOptions"></div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" data-i18n>Nama Kamu</label>
+        <input
+          type="text"
+          id="checkoutNameInput"
+          class="buyer-name"
+          placeholder="Nama kamu"
+          autocomplete="name"
+        />
+      </div>
+      <button class="btn btn-dark" id="checkoutSendBtn" disabled>
+        <i data-lucide="send"></i> Kirim via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // KONFIGURASI
+    // ============================================================
+    const WA_NUMBER = "6285695344487";
+    const STORE_KEY = "1217";
+    const STORAGE_KEY = "jb_state_v1";
+
+    // ============================================================
+    // DATA PRODUK DAFTAR PRODUK
+    // ============================================================
+    const products = [
+      {
+        id: "ubi",
+        name: "Es Ubi Ungu",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/drannyv4mf",
+        icon: "cup-soda",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "jagung",
+        name: "Es Jagung Hawai",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/zlz363vznu",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "stroberi",
+        name: "Es Strobery Creamy",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/8lisj54uxt",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "alpukat",
+        name: "Es Alpukat Creamy",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/gwug181yv7",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "tehpoci",
+        name: "Es Teh Poci",
+        prices: { reguler: 3000, jumbo: 5000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/umzcfa5z3x",
+        icon: "coffee",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "thaitea",
+        name: "Es Thai Tea",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/anpt2a51v1",
+        icon: "milk",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "greentea",
+        name: "Es Green Tea",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/9uyj3jwpa2",
+        icon: "cherry",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "coklat",
+        name: "Es Coklat",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/rv2ai0bkds",
+        icon: "candy",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "durian",
+        name: "Es Serut Durian Susu",
+        prices: { reguler: 13000, jumbo: 18000 },
+        img: "https://files.catbox.moe/durian.png",
+        icon: "cookie",
+        soldOut: false,
+        bestseller: false,
+      },
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let rates = {};
+    let displayCurrency = "IDR";
+    let currentLang = "id";
+    let currentProduct = null;
+    const translationCache = new Map();
+
+    // ============================================================
+    // DOM
+    // ============================================================
+    const productsGrid = document.getElementById("productsGrid");
+    const storeStatus = document.getElementById("storeStatus");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsOverlay = document.getElementById("settingsOverlay");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const closeSettingsBtn = document.getElementById("closeSettings");
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+    const amountInput = document.getElementById("amountInput");
+    const fromCurrency = document.getElementById("fromCurrency");
+    const toCurrency = document.getElementById("toCurrency");
+    const conversionResult = document.getElementById("conversionResult");
+    const displayCurrencySelect = document.getElementById("displayCurrency");
+    const languageSelect = document.getElementById("languageSelect");
+    const storeOpenToggle = document.getElementById("storeOpenToggle");
+    const adminModeToggle = document.getElementById("adminModeToggle");
+    const storeLockScreen = document.getElementById("storeLockScreen");
+    const storeSettingsContent = document.getElementById("storeSettingsContent");
+    const storePinInput = document.getElementById("storePinInput");
+    const storePinSubmit = document.getElementById("storePinSubmit");
+    const storePinError = document.getElementById("storePinError");
+    const bestsellerList = document.getElementById("bestsellerList");
+    const bestsellerCount = document.getElementById("bestsellerCount");
+    const checkoutOverlay = document.getElementById("checkoutOverlay");
+    const checkoutModal = document.getElementById("checkoutModal");
+    const checkoutClose = document.getElementById("checkoutClose");
+
+    // ============================================================
+    // STATE PERSISTENCE
+    // ============================================================
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const state = JSON.parse(raw);
+        if (state && state.products) {
+          products.forEach((p) => {
+            const s = state.products[p.id];
+            if (s) {
+              if (typeof s.soldOut === "boolean") p.soldOut = s.soldOut;
+              if (typeof s.bestseller === "boolean") p.bestseller = s.bestseller;
+            }
+          });
+        }
+        if (state && typeof state.storeOpen === "boolean") {
+          storeOpenToggle.checked = state.storeOpen;
+        }
+      } catch (e) {
+        console.warn("loadState failed", e);
+      }
+    }
+
+    function saveState() {
+      try {
+        const state = {
+          storeOpen: storeOpenToggle.checked,
+          products: {},
+        };
+        products.forEach((p) => {
+          state.products[p.id] = {
+            soldOut: !!p.soldOut,
+            bestseller: !!p.bestseller,
+          };
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn("saveState failed", e);
+      }
+    }
+
+    // ============================================================
+    // PARTIKEL
+    // ============================================================
+    function createParticles() {
+      const container = document.getElementById("particles");
+      const count = 24;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement("div");
+        el.classList.add("particle");
+        const size = Math.random() * 18 + 6;
+        el.style.width = size + "px";
+        el.style.height = size + "px";
+        el.style.left = Math.random() * 100 + "%";
+        el.style.top = Math.random() * 100 + "%";
+        el.style.animationDuration = Math.random() * 12 + 8 + "s";
+        el.style.animationDelay = Math.random() * -20 + "s";
+        el.style.opacity = Math.random() * 0.5 + 0.2;
+        container.appendChild(el);
+      }
+    }
+
+    // ============================================================
+    // FORMAT HARGA
+    // ============================================================
+    function formatPrice(priceIDR) {
+      if (displayCurrency === "IDR") {
+        return "Rp " + priceIDR.toLocaleString("id-ID");
+      }
+      const rate = rates[displayCurrency];
+      if (!rate) return "Rp " + priceIDR.toLocaleString("id-ID");
+      const converted = priceIDR * rate;
+      try {
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: displayCurrency,
+          maximumFractionDigits: 2,
+        }).format(converted);
+      } catch {
+        return displayCurrency + " " + converted.toFixed(2);
+      }
+    }
+
+    // ============================================================
+    // BADGE HELPERS
+    // ============================================================
+    function badgeHTML(p) {
+      let html = "";
+      if (p.bestseller) {
+        html += `<span class="badge-bestseller"><i data-lucide="star"></i>Bestseller</span>`;
+      }
+      if (p.soldOut) {
+        html += `<span class="badge-soldout">Habis</span>`;
+      }
+      return html;
+    }
+
+    function updateCardBadges(productId) {
+      const p = products.find((x) => x.id === productId);
+      if (!p) return;
+      const card = document.querySelector(
+        `.product-card[data-id="${productId}"]`
+      );
+      if (!card) return;
+
+      const container = card.querySelector(".badges-tl");
+      if (container) container.innerHTML = badgeHTML(p);
+
+      const buyBtn = card.querySelector(".btn-buy");
+      if (buyBtn) {
+        if (p.soldOut) {
+          buyBtn.disabled = true;
+          buyBtn.innerHTML = '<i data-lucide="ban"></i> Habis';
+        } else {
+          buyBtn.disabled = false;
+          buyBtn.innerHTML = '<i data-lucide="shopping-bag"></i> Pilih';
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ============================================================
+    // RENDER PRODUK
+    // ============================================================
+    function renderProducts() {
+      productsGrid.innerHTML = "";
+      products.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.dataset.id = p.id;
+
+        const buyBtnContent = p.soldOut
+          ? '<i data-lucide="ban"></i> Habis'
+          : '<i data-lucide="shopping-bag"></i> Pilih';
+
+        card.innerHTML = `
+          <div class="product-img-wrap">
+            <img
+              src="${p.img}"
+              alt="${p.name}"
+              class="product-img"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+            />
+            <div class="product-img-fallback" style="display:none">
+              <i data-lucide="${p.icon}"></i>
+            </div>
+            <div class="badges-tl">${badgeHTML(p)}</div>
+            <label class="soldout-toggle admin-only" style="display:none">
+              <input type="checkbox" class="soldout-checkbox" ${
+                p.soldOut ? "checked" : ""
+              } />
+              Habis
+            </label>
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">${p.name}</h3>
+            <button class="btn btn-dark btn-buy" ${
+              p.soldOut ? "disabled" : ""
+            }>${buyBtnContent}</button>
+          </div>
+        `;
+
+        // Toggle sold out via kartu (admin mode)
+        const soldOutCheckbox = card.querySelector(".soldout-checkbox");
+        soldOutCheckbox.addEventListener("change", (e) => {
+          p.soldOut = e.target.checked;
+          updateCardBadges(p.id);
+          saveState();
+        });
+
+        // Tombol Pilih
+        const buyBtn = card.querySelector(".btn-buy");
+        buyBtn.addEventListener("click", () => {
+          if (p.soldOut) return;
+          openCheckout(p);
+        });
+
+        productsGrid.appendChild(card);
+      });
+
+      updateAdminVisibility();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ============================================================
+    // BESTSELLER LIST (di Pengaturan Toko)
+    // ============================================================
+    function renderBestsellerList() {
+      if (!bestsellerList) return;
+      bestsellerList.innerHTML = products
+        .map(
+          (p) => `
+        <div class="bestseller-item">
+          <span>${p.name}</span>
+          <label class="switch">
+            <input type="checkbox" data-product-id="${p.id}" ${
+            p.bestseller ? "checked" : ""
+          } />
+            <span class="slider"></span>
+          </label>
+        </div>
+      `
+        )
+        .join("");
+
+      bestsellerList
+        .querySelectorAll('input[type="checkbox"]')
+        .forEach((cb) => {
+          cb.addEventListener("change", (e) => {
+            const pid = e.target.dataset.productId;
+            const p = products.find((x) => x.id === pid);
+            if (!p) return;
+            p.bestseller = e.target.checked;
+            updateCardBadges(pid);
+            updateBestsellerCount();
+            saveState();
+          });
+        });
+
+      updateBestsellerCount();
+    }
+
+    function updateBestsellerCount() {
+      if (!bestsellerCount) return;
+      bestsellerCount.textContent = products.filter((p) => p.bestseller).length;
+    }
+
+    // ============================================================
+    // CHECKOUT MODAL
+    // ============================================================
+    function openCheckout(product) {
+      currentProduct = product;
+      closeSettings();
+
+      const img = document.getElementById("checkoutImg");
+      const fallback = document.getElementById("checkoutFallback");
+      const nameEl = document.getElementById("checkoutName");
+      const priceOptions = document.getElementById("checkoutPriceOptions");
+      const nameInput = document.getElementById("checkoutNameInput");
+      const sendBtn = document.getElementById("checkoutSendBtn");
+
+      img.style.display = "block";
+      img.src = product.img;
+      img.alt = product.name;
+      fallback.style.display = "none";
+
+      const fallbackIcon = fallback.querySelector("i");
+      if (fallbackIcon) fallbackIcon.setAttribute("data-lucide", product.icon);
+
+      img.onerror = () => {
+        img.style.display = "none";
+        fallback.style.display = "flex";
+        if (window.lucide) lucide.createIcons();
+      };
+
+      nameEl.textContent = product.name;
+      nameInput.value = "";
+
+      priceOptions.innerHTML = `
+        <label class="price-chip">
+          <input type="radio" name="checkoutPrice" value="reguler" />
+          <span>Reguler <span class="price">${formatPrice(
+            product.prices.reguler
+          )}</span></span>
+        </label>
+        <label class="price-chip">
+          <input type="radio" name="checkoutPrice" value="jumbo" />
+          <span>Jumbo <span class="price">${formatPrice(
+            product.prices.jumbo
+          )}</span></span>
+        </label>
+      `;
+
+      sendBtn.disabled = true;
+
+      function validate() {
+        const selected = priceOptions.querySelector(
+          'input[type="radio"]:checked'
+        );
+        const nameVal = nameInput.value.trim();
+        sendBtn.disabled = !(selected && nameVal);
+      }
+
+      priceOptions
+        .querySelectorAll('input[type="radio"]')
+        .forEach((r) => r.addEventListener("change", validate));
+      nameInput.addEventListener("input", validate);
+
+      sendBtn.onclick = () => {
+        const selected = priceOptions.querySelector(
+          'input[type="radio"]:checked'
+        );
+        if (!selected) return;
+        const nameVal = nameInput.value.trim();
+        if (!nameVal) return;
+
+        const priceType = selected.value;
+        const priceValue = product.prices[priceType];
+        const priceLabel = priceType === "reguler" ? "Reguler" : "Jumbo";
+        const formatted = formatPrice(priceValue);
+
+        const message = `Saya ${nameVal}, ingin membeli ${product.name} ${priceLabel} (${formatted})`;
+        const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+          message
+        )}`;
+        window.open(url, "_blank");
+      };
+
+      checkoutOverlay.classList.add("active");
+      checkoutModal.classList.add("active");
+      if (window.lucide) lucide.createIcons();
+
+      setTimeout(() => nameInput.focus(), 350);
+    }
+
+    function closeCheckout() {
+      checkoutOverlay.classList.remove("active");
+      checkoutModal.classList.remove("active");
+      currentProduct = null;
+    }
+
+    function refreshCheckoutPrices() {
+      if (!currentProduct) return;
+      if (!checkoutModal.classList.contains("active")) return;
+      const priceOptions = document.getElementById("checkoutPriceOptions");
+      const regulerPriceEl = priceOptions.querySelector(
+        'input[value="reguler"] + span .price'
+      );
+      const jumboPriceEl = priceOptions.querySelector(
+        'input[value="jumbo"] + span .price'
+      );
+      if (regulerPriceEl)
+        regulerPriceEl.textContent = formatPrice(currentProduct.prices.reguler);
+      if (jumboPriceEl)
+        jumboPriceEl.textContent = formatPrice(currentProduct.prices.jumbo);
+    }
+
+    // ============================================================
+    // KURS MATA UANG
+    // ============================================================
+    async function fetchRates() {
+      try {
+        const res = await fetch("https://open.er-api.com/v6/latest/IDR");
+        const data = await res.json();
+        if (data && data.rates) {
+          rates = data.rates;
+          populateCurrencySelects();
+          updateConversion();
+        }
+      } catch (e) {
+        console.warn("Gagal memuat kurs:", e);
+      }
+    }
+
+    function populateCurrencySelects() {
+      const codes = Object.keys(rates).sort();
+      const options = codes
+        .map((c) => `<option value="${c}">${c}</option>`)
+        .join("");
+
+      toCurrency.innerHTML = options;
+      toCurrency.value = "USD";
+      displayCurrencySelect.innerHTML = options;
+      displayCurrencySelect.value = displayCurrency;
+
+      fromCurrency.innerHTML =
+        `<option value="IDR">IDR — Rupiah</option>` +
+        codes
+          .filter((c) => c !== "IDR")
+          .slice(0, 20)
+          .map((c) => `<option value="${c}">${c}</option>`)
+          .join("");
+    }
+
+    function updateConversion() {
+      const amount = parseFloat(amountInput.value) || 0;
+      const from = fromCurrency.value;
+      const to = toCurrency.value;
+
+      if (!rates[from] || !rates[to]) {
+        conversionResult.innerHTML = "—";
+        return;
+      }
+
+      const inIDR = amount / rates[from];
+      const result = inIDR * rates[to];
+
+      try {
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: to,
+          maximumFractionDigits: 2,
+        }).format(result);
+        conversionResult.innerHTML = `${formatted}<small>1 ${from} = ${(
+          rates[to] / rates[from]
+        ).toFixed(4)} ${to}</small>`;
+      } catch {
+        conversionResult.innerHTML = `${to} ${result.toFixed(
+          2
+        )}<small>1 ${from} = ${(rates[to] / rates[from]).toFixed(4)} ${to}</small>`;
+      }
+    }
+
+    // ============================================================
+    // TERJEMAHAN
+    // ============================================================
+    async function translateText(text, targetLang) {
+      if (!text || targetLang === "id") return text;
+      const cacheKey = targetLang + "|" + text;
+      if (translationCache.has(cacheKey)) return translationCache.get(cacheKey);
+
+      try {
+        const res = await fetch(
+          `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+            text
+          )}&langpair=id|${targetLang}`
+        );
+        const data = await res.json();
+        const translated = data?.responseData?.translatedText || text;
+        translationCache.set(cacheKey, translated);
+        return translated;
+      } catch {
+        return text;
+      }
+    }
+
+    async function applyLanguage(lang) {
+      currentLang = lang;
+
+      const elements = document.querySelectorAll("[data-i18n]");
+      for (const el of elements) {
+        const original = el.dataset.i18nOriginal || el.textContent.trim();
+        if (!el.dataset.i18nOriginal) el.dataset.i18nOriginal = original;
+
+        if (lang === "id") {
+          el.textContent = original;
+        } else {
+          const translated = await translateText(original, lang);
+          el.textContent = translated;
+        }
+      }
+
+      const checkoutNameInput = document.getElementById("checkoutNameInput");
+      if (checkoutNameInput) {
+        if (!checkoutNameInput.dataset.originalPlaceholder) {
+          checkoutNameInput.dataset.originalPlaceholder =
+            checkoutNameInput.placeholder;
+        }
+        if (lang === "id") {
+          checkoutNameInput.placeholder =
+            checkoutNameInput.dataset.originalPlaceholder;
+        } else {
+          translateText(
+            checkoutNameInput.dataset.originalPlaceholder,
+            lang
+          ).then((t) => (checkoutNameInput.placeholder = t));
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ============================================================
+    // TOKO BUKA / TUTUP
+    // ============================================================
+    function updateStoreStatus() {
+      const isOpen = storeOpenToggle.checked;
+      storeStatus.textContent = isOpen ? "Toko Buka" : "Toko Tutup";
+      storeStatus.className =
+        "badge " + (isOpen ? "badge-open" : "badge-closed");
+    }
+
+    // ============================================================
+    // MODE ADMIN
+    // ============================================================
+    function updateAdminVisibility() {
+      const isAdmin = adminModeToggle.checked;
+      document.querySelectorAll(".admin-only").forEach((el) => {
+        el.style.display = isAdmin ? "flex" : "none";
+      });
+    }
+
+    // ============================================================
+    // KUNCI PIN PENGATURAN TOKO
+    // ============================================================
+    function resetStoreLock() {
+      storeLockScreen.style.display = "block";
+      storeSettingsContent.style.display = "none";
+      storePinInput.value = "";
+      storePinError.textContent = "";
+      storePinError.classList.remove("shake");
+    }
+
+    function tryUnlockStore() {
+      const val = storePinInput.value.trim();
+      if (val === STORE_KEY) {
+        storeLockScreen.style.display = "none";
+        storeSettingsContent.style.display = "block";
+        storePinError.textContent = "";
+        renderBestsellerList();
+        if (window.lucide) lucide.createIcons();
+      } else {
+        storePinError.textContent = "Kunci salah, coba lagi";
+        storePinError.classList.remove("shake");
+        void storePinError.offsetWidth;
+        storePinError.classList.add("shake");
+        storePinInput.value = "";
+        storePinInput.focus();
+      }
+    }
+
+    storePinSubmit.addEventListener("click", tryUnlockStore);
+    storePinInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        tryUnlockStore();
+      }
+    });
+
+    // ============================================================
+    // SETTINGS PANEL
+    // ============================================================
+    function openSettings() {
+      closeCheckout();
+      settingsPanel.classList.add("active");
+      settingsOverlay.classList.add("active");
+    }
+
+    function closeSettings() {
+      settingsPanel.classList.remove("active");
+      settingsOverlay.classList.remove("active");
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+    settingsBtn.addEventListener("click", openSettings);
+    closeSettingsBtn.addEventListener("click", closeSettings);
+    settingsOverlay.addEventListener("click", closeSettings);
+
+    checkoutClose.addEventListener("click", closeCheckout);
+    checkoutOverlay.addEventListener("click", closeCheckout);
+
+    // Tab switching
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        tabContents.forEach((c) => c.classList.remove("active"));
+        btn.classList.add("active");
+        document
+          .getElementById("tab-" + btn.dataset.tab)
+          .classList.add("active");
+
+        if (btn.dataset.tab === "store") {
+          resetStoreLock();
+          setTimeout(() => storePinInput.focus(), 200);
+        }
+      });
+    });
+
+    // Konversi
+    amountInput.addEventListener("input", updateConversion);
+    fromCurrency.addEventListener("change", updateConversion);
+    toCurrency.addEventListener("change", updateConversion);
+
+    // Tampilan mata uang
+    displayCurrencySelect.addEventListener("change", () => {
+      displayCurrency = displayCurrencySelect.value;
+      refreshCheckoutPrices();
+    });
+
+    // Bahasa
+    languageSelect.addEventListener("change", () => {
+      applyLanguage(languageSelect.value);
+    });
+
+    // Toko
+    storeOpenToggle.addEventListener("change", () => {
+      updateStoreStatus();
+      saveState();
+    });
+    adminModeToggle.addEventListener("change", updateAdminVisibility);
+
+    // Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (checkoutModal.classList.contains("active")) closeCheckout();
+        else if (settingsPanel.classList.contains("active")) closeSettings();
+      }
+    });
+
+    // ============================================================
+    // INISIALISASI
+    // ============================================================
+    loadState();
+    createParticles();
+    renderProducts();
+    renderBestsellerList();
+    fetchRates();
+    updateStoreStatus();
+    resetStoreLock();
+
+    document
+      .querySelectorAll(
+        "h1, h2, .field-label, .info-label, .info-value, .btn, .tab-btn, .hint, .badge, .lock-title, .lock-subtitle, .toggle-row span"
+      )
+      .forEach((el) => {
+        if (!el.hasAttribute("data-i18n")) el.setAttribute("data-i18n", "");
+      });
+
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
