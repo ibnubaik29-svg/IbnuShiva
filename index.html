@@ -5,6 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jajanan Ibnu-Shiva</title>
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- ============================================================ -->
+  <!-- STRUKTUR DATA (dipindah tepat di atas RESET & VARIABEL)      -->
+  <!-- ============================================================ -->
+  <script>
+
+    // ============================================================
+    // STATUS TOKO
+    // true  = Toko Buka
+    // false = Toko Tutup
+    // (diubah manual seperti bestseller & soldOut produk)
+    // ============================================================
+    let storeOpen = true;
+    
+    // ============================================================
+    // DATA PRODUK
+    // ============================================================
+    const products = [
+      {
+        id: "ubi",
+        name: "Es Ubi Ungu",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/drannyv4mf",
+        icon: "cup-soda",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "jagung",
+        name: "Es Jagung Hawai",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/zlz363vznu",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "stroberi",
+        name: "Es Strobery Creamy",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/8lisj54uxt",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "alpukat",
+        name: "Es Alpukat Creamy",
+        prices: { reguler: 6000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/gwug181yv7",
+        icon: "ice-cream",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "tehpoci",
+        name: "Es Teh Poci",
+        prices: { reguler: 3000, jumbo: 5000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/umzcfa5z3x",
+        icon: "coffee",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "thaitea",
+        name: "Es Thai Tea",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/anpt2a51v1",
+        icon: "milk",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "greentea",
+        name: "Es Green Tea",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/9uyj3jwpa2",
+        icon: "cherry",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "coklat",
+        name: "Es Coklat",
+        prices: { reguler: 5000, jumbo: 10000 },
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/rv2ai0bkds",
+        icon: "candy",
+        soldOut: false,
+        bestseller: false,
+      },
+      {
+        id: "durian",
+        name: "Es Serut Durian Susu",
+        prices: { reguler: 13000, jumbo: 18000 },
+        img: "https://files.catbox.moe/durian.png",
+        icon: "cookie",
+        soldOut: false,
+        bestseller: false,
+      },
+    ];
+    
+
+    // ============================================================
+    // POSTINGAN
+    // Gambar pakai URL Catbox (format: https://files.catbox.moe/xxxxx.jpg)
+    // Caption & DESC opsional — jika kosong, hanya gambar tampil.
+    // Ukuran gambar mengikuti ukuran asli (full width, auto height).
+    //
+    // Ganti contoh di bawah dengan URL Catbox milik Anda sendiri.
+    // ============================================================
+    const posts = [
+      {
+        id: "post1",
+        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/u6koy4r3jg",
+        caption: "Ubi Ungu nya baru matang gays",
+        desc: "Sabarr yaa",
+      },
+      {
+        id: "post2",
+        img: "https://files.catbox.moe/durian.png",
+        caption: "",
+        desc: "",
+      },
+      {
+        id: "post3",
+        img: "https://files.catbox.moe/durian.png",
+        caption: "Hanya Caption Tanpa Deskripsi",
+        desc: "",
+      },
+    ];
+  </script>
+
   <style>
     /* ============ RESET & VARIABEL ============ */
     *,
@@ -285,6 +417,56 @@
     .btn-dark:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-dark:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 
+    /* ============ NAVIGASI KONTEN (Menu Produk / Postingan) ============ */
+    .content-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .content-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      background: transparent;
+      font-family: var(--font);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .content-nav-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .content-nav-btn:hover {
+      background: #f5f5f5;
+      color: var(--text);
+      border-color: #d4d4d4;
+    }
+
+    .content-nav-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    .content-panel {
+      display: none;
+      animation: fadeSlide 0.35s ease;
+    }
+
+    .content-panel.active { display: block; }
+
     /* ============ PRODUK GRID ============ */
     .section-title {
       font-size: 1rem;
@@ -461,6 +643,66 @@
       padding: 10px 16px;
       font-size: 0.82rem;
       margin-top: auto;
+    }
+
+    /* ============ POSTINGAN ============ */
+    .posts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition);
+    }
+
+    .post-card:hover { box-shadow: var(--shadow-md); }
+
+    .post-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .post-body {
+      padding: 14px 18px 16px;
+    }
+
+    .post-caption {
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+    .post-desc {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .posts-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+    }
+
+    .posts-empty svg {
+      width: 40px;
+      height: 40px;
+      color: #d4d4d4;
+      margin-bottom: 10px;
+      stroke-width: 1.4;
     }
 
     /* ============ SETTINGS PANEL ============ */
@@ -957,6 +1199,15 @@
       box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
     }
 
+    /* ---- textarea untuk keterangan ---- */
+    textarea.buyer-name {
+      min-height: 64px;
+      resize: vertical;
+      line-height: 1.45;
+      padding-top: 10px;
+      display: block;
+    }
+
     .checkout-body .btn {
       width: 100%;
       padding: 12px;
@@ -972,6 +1223,9 @@
       .logo-fallback svg { width: 20px; height: 20px; }
       .header-text h1 { font-size: 0.92rem; }
 
+      .content-nav { gap: 6px; padding-bottom: 10px; }
+      .content-nav-btn { padding: 8px 14px; font-size: 0.74rem; }
+
       .products-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
       .product-body { padding: 10px 12px 12px; gap: 10px; }
       .product-name { font-size: 0.8rem; }
@@ -982,6 +1236,10 @@
       .badge-bestseller { font-size: 0.62rem; padding: 2px 8px; }
       .badge-bestseller svg { width: 10px; height: 10px; }
       .soldout-toggle { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.6rem; }
+
+      .post-body { padding: 12px 14px 14px; }
+      .post-caption { font-size: 0.9rem; }
+      .post-desc { font-size: 0.78rem; }
 
       .info-card { padding: 14px; }
       .btn-outline { font-size: 0.74rem; padding: 8px 12px; }
@@ -1047,11 +1305,31 @@
       </a>
     </section>
 
-    <!-- PRODUK -->
-    <h2 class="section-title">
-      <i data-lucide="cup-soda"></i> Menu Spesial
-    </h2>
-    <section class="products-grid" id="productsGrid"></section>
+    <!-- NAVIGASI KONTEN -->
+    <nav class="content-nav">
+      <button class="content-nav-btn active" data-content="products">
+        <i data-lucide="cup-soda"></i> Menu Produk
+      </button>
+      <button class="content-nav-btn" data-content="posts">
+        <i data-lucide="image"></i> Postingan
+      </button>
+    </nav>
+
+    <!-- PANEL PRODUK -->
+    <div class="content-panel active" id="panel-products">
+      <h2 class="section-title">
+        <i data-lucide="cup-soda"></i> Menu Spesial
+      </h2>
+      <section class="products-grid" id="productsGrid"></section>
+    </div>
+
+    <!-- PANEL POSTINGAN -->
+    <div class="content-panel" id="panel-posts">
+      <h2 class="section-title">
+        <i data-lucide="image"></i> Postingan Terbaru
+      </h2>
+      <div class="posts-list" id="postsGrid"></div>
+    </div>
   </div>
 
   <!-- SETTINGS OVERLAY -->
@@ -1260,6 +1538,28 @@
           autocomplete="name"
         />
       </div>
+      <div class="field-group">
+        <label class="field-label" data-i18n>Keterangan (Opsional)</label>
+        <textarea
+          id="checkoutNoteInput"
+          class="buyer-name"
+          placeholder="Catatan tambahan (opsional)"
+          rows="2"
+        ></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label" data-i18n>Pilihan Pesanan</label>
+        <div class="price-options" id="checkoutOrderOptions">
+          <label class="price-chip">
+            <input type="radio" name="checkoutOrder" value="diantar" />
+            <span>Diantar ke Rumah</span>
+          </label>
+          <label class="price-chip">
+            <input type="radio" name="checkoutOrder" value="ditoko" />
+            <span>Bayar di Toko</span>
+          </label>
+        </div>
+      </div>
       <button class="btn btn-dark" id="checkoutSendBtn" disabled>
         <i data-lucide="send"></i> Kirim via WhatsApp
       </button>
@@ -1270,96 +1570,9 @@
     // ============================================================
     // KONFIGURASI
     // ============================================================
-    const WA_NUMBER = "6285695344487";
+    const WA_NUMBER = "6285545216989";
     const STORE_KEY = "1217";
     const STORAGE_KEY = "jb_state_v1";
-
-    // ============================================================
-    // DATA PRODUK DAFTAR PRODUK
-    // ============================================================
-    const products = [
-      {
-        id: "ubi",
-        name: "Es Ubi Ungu",
-        prices: { reguler: 6000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/drannyv4mf",
-        icon: "cup-soda",
-        soldOut: false,
-        bestseller: true,
-      },
-      {
-        id: "jagung",
-        name: "Es Jagung Hawai",
-        prices: { reguler: 6000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/zlz363vznu",
-        icon: "ice-cream",
-        soldOut: true,
-        bestseller: true,
-      },
-      {
-        id: "stroberi",
-        name: "Es Strobery Creamy",
-        prices: { reguler: 6000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/8lisj54uxt",
-        icon: "ice-cream",
-        soldOut: true,
-        bestseller: true,
-      },
-      {
-        id: "alpukat",
-        name: "Es Alpukat Creamy",
-        prices: { reguler: 6000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/gwug181yv7",
-        icon: "ice-cream",
-        soldOut: false,
-        bestseller: true,
-      },
-      {
-        id: "tehpoci",
-        name: "Es Teh Poci",
-        prices: { reguler: 3000, jumbo: 5000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/umzcfa5z3x",
-        icon: "coffee",
-        soldOut: false,
-        bestseller: false,
-      },
-      {
-        id: "thaitea",
-        name: "Es Thai Tea",
-        prices: { reguler: 5000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/anpt2a51v1",
-        icon: "milk",
-        soldOut: false,
-        bestseller: false,
-      },
-      {
-        id: "greentea",
-        name: "Es Green Tea",
-        prices: { reguler: 5000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/9uyj3jwpa2",
-        icon: "cherry",
-        soldOut: false,
-        bestseller: false,
-      },
-      {
-        id: "coklat",
-        name: "Es Coklat",
-        prices: { reguler: 5000, jumbo: 10000 },
-        img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/rv2ai0bkds",
-        icon: "candy",
-        soldOut: false,
-        bestseller: false,
-      },
-      {
-        id: "durian",
-        name: "Es Serut Durian Susu",
-        prices: { reguler: 13000, jumbo: 18000 },
-        img: "https://files.catbox.moe/durian.png",
-        icon: "cookie",
-        soldOut: false,
-        bestseller: false,
-      },
-    ];
 
     // ============================================================
     // STATE
@@ -1374,6 +1587,9 @@
     // DOM
     // ============================================================
     const productsGrid = document.getElementById("productsGrid");
+    const postsGrid = document.getElementById("postsGrid");
+    const contentNavBtns = document.querySelectorAll(".content-nav-btn");
+    const contentPanels = document.querySelectorAll(".content-panel");
     const storeStatus = document.getElementById("storeStatus");
     const settingsBtn = document.getElementById("settingsBtn");
     const settingsOverlay = document.getElementById("settingsOverlay");
@@ -1418,7 +1634,7 @@
           });
         }
         if (state && typeof state.storeOpen === "boolean") {
-          storeOpenToggle.checked = state.storeOpen;
+          storeOpen = state.storeOpen;
         }
       } catch (e) {
         console.warn("loadState failed", e);
@@ -1428,7 +1644,7 @@
     function saveState() {
       try {
         const state = {
-          storeOpen: storeOpenToggle.checked,
+          storeOpen: storeOpen,
           products: {},
         };
         products.forEach((p) => {
@@ -1588,6 +1804,87 @@
     }
 
     // ============================================================
+    // RENDER POSTINGAN
+    // ============================================================
+    function renderPosts() {
+      if (!postsGrid) return;
+      postsGrid.innerHTML = "";
+
+      if (!posts || posts.length === 0) {
+        postsGrid.innerHTML = `
+          <div class="posts-empty">
+            <i data-lucide="image-off"></i>
+            <p>Belum ada postingan.</p>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      posts.forEach((post) => {
+        if (!post.img) return;
+
+        const card = document.createElement("div");
+        card.className = "post-card";
+
+        const img = document.createElement("img");
+        img.className = "post-img";
+        img.src = post.img;
+        img.alt = post.caption ? post.caption : "Postingan";
+        img.loading = "lazy";
+        img.onerror = () => {
+          card.style.display = "none";
+        };
+        card.appendChild(img);
+
+        const hasCaption =
+          post.caption && String(post.caption).trim().length > 0;
+        const hasDesc =
+          post.desc && String(post.desc).trim().length > 0;
+
+        if (hasCaption || hasDesc) {
+          const body = document.createElement("div");
+          body.className = "post-body";
+
+          if (hasCaption) {
+            const cap = document.createElement("h3");
+            cap.className = "post-caption";
+            cap.textContent = post.caption;
+            body.appendChild(cap);
+          }
+
+          if (hasDesc) {
+            const desc = document.createElement("p");
+            desc.className = "post-desc";
+            desc.textContent = post.desc;
+            body.appendChild(desc);
+          }
+
+          card.appendChild(body);
+        }
+
+        postsGrid.appendChild(card);
+      });
+    }
+
+    // ============================================================
+    // NAVIGASI KONTEN (Menu Produk / Postingan)
+    // ============================================================
+    function setupContentNav() {
+      contentNavBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.content;
+          contentNavBtns.forEach((b) => b.classList.remove("active"));
+          contentPanels.forEach((p) => p.classList.remove("active"));
+          btn.classList.add("active");
+          const panel = document.getElementById("panel-" + target);
+          if (panel) panel.classList.add("active");
+          if (window.lucide) lucide.createIcons();
+        });
+      });
+    }
+
+    // ============================================================
     // BESTSELLER LIST (di Pengaturan Toko)
     // ============================================================
     function renderBestsellerList() {
@@ -1641,7 +1938,9 @@
       const fallback = document.getElementById("checkoutFallback");
       const nameEl = document.getElementById("checkoutName");
       const priceOptions = document.getElementById("checkoutPriceOptions");
+      const orderOptions = document.getElementById("checkoutOrderOptions");
       const nameInput = document.getElementById("checkoutNameInput");
+      const noteInput = document.getElementById("checkoutNoteInput");
       const sendBtn = document.getElementById("checkoutSendBtn");
 
       img.style.display = "block";
@@ -1660,6 +1959,12 @@
 
       nameEl.textContent = product.name;
       nameInput.value = "";
+      noteInput.value = "";
+
+      // Reset pilihan order
+      orderOptions
+        .querySelectorAll('input[type="radio"]')
+        .forEach((r) => (r.checked = false));
 
       priceOptions.innerHTML = `
         <label class="price-chip">
@@ -1683,10 +1988,16 @@
           'input[type="radio"]:checked'
         );
         const nameVal = nameInput.value.trim();
-        sendBtn.disabled = !(selected && nameVal);
+        const orderSelected = orderOptions.querySelector(
+          'input[type="radio"]:checked'
+        );
+        sendBtn.disabled = !(selected && nameVal && orderSelected);
       }
 
       priceOptions
+        .querySelectorAll('input[type="radio"]')
+        .forEach((r) => r.addEventListener("change", validate));
+      orderOptions
         .querySelectorAll('input[type="radio"]')
         .forEach((r) => r.addEventListener("change", validate));
       nameInput.addEventListener("input", validate);
@@ -1699,12 +2010,24 @@
         const nameVal = nameInput.value.trim();
         if (!nameVal) return;
 
+        const orderSelected = orderOptions.querySelector(
+          'input[type="radio"]:checked'
+        );
+        if (!orderSelected) return;
+
         const priceType = selected.value;
         const priceValue = product.prices[priceType];
         const priceLabel = priceType === "reguler" ? "Reguler" : "Jumbo";
         const formatted = formatPrice(priceValue);
+        const orderType = orderSelected.value;
+        const orderLabel =
+          orderType === "diantar" ? "Diantar ke Rumah" : "Bayar di Toko";
+        const noteVal = noteInput.value.trim();
 
-        const message = `Saya ${nameVal}, ingin membeli ${product.name} ${priceLabel} (${formatted})`;
+        let message = `Saya ${nameVal}, ingin membeli ${product.name} ${priceLabel} (${formatted})`;
+        message += `\nPilihan Pesanan: ${orderLabel}`;
+        if (noteVal) message += `\nKeterangan: ${noteVal}`;
+
         const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
           message
         )}`;
@@ -1846,33 +2169,33 @@
       }
 
       const checkoutNameInput = document.getElementById("checkoutNameInput");
-      if (checkoutNameInput) {
-        if (!checkoutNameInput.dataset.originalPlaceholder) {
-          checkoutNameInput.dataset.originalPlaceholder =
-            checkoutNameInput.placeholder;
+      const checkoutNoteInput = document.getElementById("checkoutNoteInput");
+      [checkoutNameInput, checkoutNoteInput].forEach((input) => {
+        if (!input) return;
+        if (!input.dataset.originalPlaceholder) {
+          input.dataset.originalPlaceholder = input.placeholder;
         }
         if (lang === "id") {
-          checkoutNameInput.placeholder =
-            checkoutNameInput.dataset.originalPlaceholder;
+          input.placeholder = input.dataset.originalPlaceholder;
         } else {
-          translateText(
-            checkoutNameInput.dataset.originalPlaceholder,
-            lang
-          ).then((t) => (checkoutNameInput.placeholder = t));
+          translateText(input.dataset.originalPlaceholder, lang).then(
+            (t) => (input.placeholder = t)
+          );
         }
-      }
+      });
 
       if (window.lucide) lucide.createIcons();
     }
 
     // ============================================================
     // TOKO BUKA / TUTUP
+    // (menggunakan variabel storeOpen — true/false manual)
     // ============================================================
     function updateStoreStatus() {
-      const isOpen = storeOpenToggle.checked;
-      storeStatus.textContent = isOpen ? "Toko Buka" : "Toko Tutup";
+      storeStatus.textContent = storeOpen ? "Toko Buka" : "Toko Tutup";
       storeStatus.className =
-        "badge " + (isOpen ? "badge-open" : "badge-closed");
+        "badge " + (storeOpen ? "badge-open" : "badge-closed");
+      if (storeOpenToggle) storeOpenToggle.checked = storeOpen;
     }
 
     // ============================================================
@@ -1946,7 +2269,7 @@
     checkoutClose.addEventListener("click", closeCheckout);
     checkoutOverlay.addEventListener("click", closeCheckout);
 
-    // Tab switching
+    // Tab switching (settings)
     tabBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         tabBtns.forEach((b) => b.classList.remove("active"));
@@ -1981,6 +2304,7 @@
 
     // Toko
     storeOpenToggle.addEventListener("change", () => {
+      storeOpen = storeOpenToggle.checked;
       updateStoreStatus();
       saveState();
     });
@@ -2000,6 +2324,8 @@
     loadState();
     createParticles();
     renderProducts();
+    renderPosts();
+    setupContentNav();
     renderBestsellerList();
     fetchRates();
     updateStoreStatus();
