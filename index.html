@@ -7,21 +7,29 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <script>
-    let storeOpen = true;
+    /* ============================================================
+       KONFIGURASI TOKO — UBAH LANGSUNG DI SINI
+       ============================================================ */
+    let storeOpen = true;                  // ← true = buka, false = tutup
+
     const ONGKIR_DELIVERY = 3000;
     const MIN_DELIVERY_QTY = 3;
     const DELIVERY_AREA = "Kecamatan Tempuran";
 
+    /*
+      soldOut   : true → tombol "Pilih" nonaktif + badge "Habis"
+      bestseller: true → badge "Bestseller" muncul di atas gambar
+    */
     const products = [
-      { id: "ubi", name: "Es Ubi Ungu", prices: { reguler: 6000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/cuxa27yrrg", icon: "cup-soda", soldOut: false, bestseller: true },
-      { id: "jagung", name: "Es Jagung Hawai", prices: { reguler: 6000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/7isxgjzm8s", icon: "ice-cream", soldOut: false, bestseller: true },
-      { id: "stroberi", name: "Es Strobery Creamy", prices: { jumbo: 12000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/xqk117toxh", icon: "ice-cream", soldOut: false, bestseller: false },
-      { id: "alpukat", name: "Es Alpukat Creamy", prices: { reguler: 6000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/teipxrrbif", icon: "ice-cream", soldOut: true, bestseller: false },
-      { id: "tehpoci", name: "Es Teh Poci", prices: { reguler: 3000, jumbo: 5000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/dro5y83qki", icon: "coffee", soldOut: false, bestseller: false },
-      { id: "thaitea", name: "Es Thai Tea", prices: { reguler: 5000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/uvxg40wxk5", icon: "milk", soldOut: false, bestseller: false },
-      { id: "greentea", name: "Es Green Tea", prices: { reguler: 5000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/r6hk4snvw0", icon: "cherry", soldOut: false, bestseller: false },
-      { id: "coklat", name: "Es Coklat", prices: { reguler: 5000, jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/upmaclrqlb", icon: "candy", soldOut: false, bestseller: false },
-      { id: "durian", name: "Es Serut Durian Susu", prices: { reguler: 13000, jumbo: 18000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/el2so6c65g", icon: "cookie", soldOut: true, bestseller: true },
+      { id: "ubi",      name: "Es Ubi Ungu",          prices: { reguler: 6000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/cuxa27yrrg", icon: "cup-soda",  soldOut: false, bestseller: true  },
+      { id: "jagung",   name: "Es Jagung Hawai",      prices: { reguler: 6000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/7isxgjzm8s", icon: "ice-cream", soldOut: false, bestseller: true  },
+      { id: "stroberi", name: "Es Strobery Creamy",   prices: { jumbo: 12000 },                 img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/xqk117toxh", icon: "ice-cream", soldOut: false, bestseller: false },
+      { id: "alpukat",  name: "Es Alpukat Creamy",    prices: { reguler: 6000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/teipxrrbif", icon: "ice-cream", soldOut: true,  bestseller: false },
+      { id: "tehpoci",  name: "Es Teh Poci",          prices: { reguler: 3000,  jumbo: 5000  }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/dro5y83qki", icon: "coffee",    soldOut: false, bestseller: false },
+      { id: "thaitea",  name: "Es Thai Tea",          prices: { reguler: 5000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/uvxg40wxk5", icon: "milk",      soldOut: false, bestseller: false },
+      { id: "greentea", name: "Es Green Tea",         prices: { reguler: 5000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/r6hk4snvw0", icon: "cherry",    soldOut: false, bestseller: false },
+      { id: "coklat",   name: "Es Coklat",            prices: { reguler: 5000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/upmaclrqlb", icon: "candy",     soldOut: false, bestseller: false },
+      { id: "durian",   name: "Es Serut Durian Susu", prices: { reguler: 13000, jumbo: 18000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/el2so6c65g", icon: "cookie",    soldOut: true,  bestseller: true  },
     ];
 
     const posts = [
@@ -197,14 +205,6 @@
     @keyframes badgePop { 0% { transform: scale(0.75); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     @keyframes starPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
 
-    .soldout-toggle {
-      position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 5px;
-      background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(6px);
-      border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px;
-      font-size: 0.64rem; font-weight: 600; color: var(--text-soft); cursor: pointer; z-index: 3;
-    }
-    .soldout-toggle input { accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; }
-
     .product-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
     .product-name { font-size: 0.92rem; font-weight: 700; letter-spacing: -0.01em; }
     .btn-buy { width: 100%; padding: 10px 16px; font-size: 0.82rem; margin-top: auto; }
@@ -281,52 +281,8 @@
       color: var(--text); letter-spacing: -0.01em; margin-top: 6px;
     }
     .result-box small { display: block; font-size: 0.68rem; font-weight: 500; color: var(--text-soft); margin-top: 4px; letter-spacing: 0; }
-
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-    .toggle-row:last-child { border-bottom: none; }
-    .toggle-row span { font-size: 0.82rem; font-weight: 500; }
-    .switch { position: relative; width: 44px; height: 26px; flex-shrink: 0; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; inset: 0; background: #e0e0e0; border-radius: 999px;
-      cursor: pointer; transition: background var(--transition);
-    }
-    .slider::before {
-      content: ""; position: absolute; width: 20px; height: 20px; left: 3px; bottom: 3px;
-      background: #ffffff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-      transition: transform var(--transition);
-    }
-    .switch input:checked + .slider { background: var(--accent); }
-    .switch input:checked + .slider::before { transform: translateX(18px); }
     .hint { font-size: 0.7rem; color: var(--text-soft); line-height: 1.5; margin-top: 6px; }
 
-    .bestseller-section { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
-    .bestseller-list {
-      max-height: 340px; overflow-y: auto; border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 2px 14px; background: #fafafa; margin-top: 8px;
-    }
-    .bestseller-item { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); gap: 12px; }
-    .bestseller-item:last-child { border-bottom: none; }
-    .bestseller-item span { font-size: 0.8rem; font-weight: 600; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .bestseller-item .switch { transform: scale(0.92); transform-origin: right center; }
-
-    .lock-screen { text-align: center; padding: 26px 8px 20px; animation: fadeSlide 0.35s ease; }
-    .lock-icon-wrap {
-      width: 64px; height: 64px; margin: 0 auto 16px; background: #f5f5f5;
-      border-radius: 20px; display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--border);
-    }
-    .lock-icon-wrap svg { width: 28px; height: 28px; color: var(--text); }
-    .lock-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
-    .lock-subtitle { font-size: 0.78rem; color: var(--text-soft); margin-bottom: 20px; }
-    .lock-input { text-align: center; font-size: 1.15rem; letter-spacing: 0.45em; padding: 12px 14px 12px 18px; font-weight: 700; }
-    .lock-input::placeholder { letter-spacing: 0.45em; color: #c8c8c8; }
-    .lock-btn { width: 100%; margin-top: 12px; padding: 11px; font-size: 0.85rem; }
-    .lock-error { font-size: 0.75rem; color: var(--danger); margin-top: 12px; min-height: 18px; font-weight: 600; display: block; }
-    .lock-error.shake { animation: shake 0.4s ease; }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
-
-    /* ============ CHECKOUT MODAL ============ */
     .checkout-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.35);
       backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -363,7 +319,6 @@
 
     .checkout-body { padding: 22px 20px 24px; }
 
-    /* Judul produk */
     .checkout-body h3 {
       font-size: 1.15rem; font-weight: 800; margin-bottom: 16px;
       letter-spacing: -0.02em; color: var(--text); line-height: 1.3;
@@ -378,7 +333,6 @@
       flex-shrink: 0;
     }
 
-    /* ============ SECTION CARD (Elegan + Gemoy) ============ */
     .checkout-section {
       background: #fafbfc;
       border: 1px solid #eef0f3;
@@ -395,7 +349,6 @@
     }
     .checkout-section:hover .section-icon { transform: scale(1.08) rotate(-4deg); }
 
-    /* Animasi masuk bertahap */
     .checkout-modal.active .checkout-section {
       animation: sectionIn 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards;
     }
@@ -410,7 +363,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Header baris ikon + label */
     .section-head {
       display: flex;
       align-items: center;
@@ -429,7 +381,6 @@
       min-width: 0;
     }
 
-    /* Ikon gemoy bulat pastel */
     .section-icon {
       display: inline-flex;
       align-items: center;
@@ -442,7 +393,6 @@
     }
     .section-icon svg { width: 15px; height: 15px; stroke-width: 2.2; }
 
-    /* Warna pastel per section */
     .checkout-section[data-tint="indigo"] .section-icon { background: #EEF2FF; }
     .checkout-section[data-tint="indigo"] .section-icon svg { color: #6366F1; }
     .checkout-section[data-tint="orange"] .section-icon { background: #FFF7ED; }
@@ -464,7 +414,6 @@
       letter-spacing: 0.04em;
     }
 
-    /* ============ PRICE CHIPS ============ */
     .price-options { display: flex; gap: 8px; flex-wrap: wrap; }
     .price-chip { flex: 1; min-width: 0; cursor: pointer; position: relative; }
     .price-chip input { position: absolute; opacity: 0; pointer-events: none; }
@@ -490,7 +439,6 @@
     }
     .price-chip span .price { font-size: 0.85rem; font-weight: 700; }
 
-    /* ============ QTY INLINE ============ */
     .qty-inline {
       display: inline-flex;
       align-items: center;
@@ -535,7 +483,6 @@
       letter-spacing: -0.01em;
     }
 
-    /* ============ ORDER CHIPS (Besar, simetris, + Rp 3.000 di kanan) ============ */
     .order-chips { gap: 8px; flex-wrap: nowrap; }
     .order-chips .price-chip { flex: 1 1 0; min-width: 0; }
     .order-chips .price-chip > span {
@@ -569,7 +516,6 @@
       color: #ffffff;
     }
 
-    /* ============ DELIVERY INFO ============ */
     .delivery-info {
       background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px;
       padding: 10px 12px; font-size: 0.72rem; color: #92400e; display: flex;
@@ -579,7 +525,6 @@
     .delivery-info svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; color: #d97706; }
     .delivery-info strong { font-weight: 700; }
 
-    /* ============ BUYER NAME / TEXTAREA ============ */
     .buyer-name {
       width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
       border-radius: 12px; font-family: var(--font); font-size: 0.82rem;
@@ -594,7 +539,6 @@
     }
     textarea.buyer-name { min-height: 64px; resize: vertical; line-height: 1.45; padding-top: 10px; display: block; }
 
-    /* ============ VARIANT GRID (dalam section) ============ */
     .variant-progress {
       font-size: 0.68rem; font-weight: 700; color: var(--text-soft);
       padding: 3px 10px; border-radius: 999px; background: #ffffff;
@@ -662,7 +606,6 @@
     }
     .min-warning svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-    /* ============ PRICE SUMMARY ============ */
     .price-summary {
       background: #fafafa; border: 1px solid var(--border);
       border-radius: 14px; padding: 14px 16px; margin-top: 14px;
@@ -681,7 +624,6 @@
     }
     .price-row.total .price-val { font-size: 1.05rem; font-weight: 800; }
 
-    /* ============ SEND BUTTON ============ */
     .checkout-body .btn-dark {
       width: 100%;
       padding: 14px;
@@ -703,7 +645,291 @@
     }
     .checkout-body .btn-dark:disabled { box-shadow: none; }
 
-    /* ============ RESPONSIF ============ */
+    /* ===== MUSIC PLAYER STYLES ===== */
+    .music-search-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .music-search-row .field-input {
+      flex: 1;
+    }
+    .music-results {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      padding-right: 4px;
+    }
+    .music-result-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .music-result-item:hover {
+      background: #f5f5f5;
+      border-color: #d4d4d4;
+    }
+    .music-result-item.playing {
+      border-color: var(--accent);
+      background: #f0f0f0;
+    }
+    .music-result-art {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #e5e5e5;
+    }
+    .music-result-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .music-result-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .music-result-artist {
+      font-size: 0.66rem;
+      color: var(--text-soft);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .music-result-duration {
+      font-size: 0.62rem;
+      color: var(--text-soft);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .music-player {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .music-now-playing {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .music-now-art {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #e5e5e5;
+      flex-shrink: 0;
+    }
+    .music-now-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .music-now-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .music-now-artist {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .music-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .music-time {
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      min-width: 32px;
+      text-align: center;
+    }
+    .music-progress-bar {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 5px;
+      border-radius: 999px;
+      background: #e5e5e5;
+      outline: none;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .music-progress-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+    .music-progress-bar::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .music-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .music-ctrl-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      color: var(--text);
+      padding: 0;
+    }
+    .music-ctrl-btn:hover {
+      background: #f5f5f5;
+      border-color: #d4d4d4;
+      transform: scale(1.06);
+    }
+    .music-ctrl-btn.play-btn {
+      width: 46px;
+      height: 46px;
+      background: var(--accent);
+      color: var(--accent-text);
+      border-color: var(--accent);
+    }
+    .music-ctrl-btn.play-btn:hover {
+      opacity: 0.88;
+      transform: scale(1.08);
+    }
+    .music-ctrl-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    .music-ctrl-btn.play-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    .music-volume-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .music-volume-row svg {
+      width: 15px;
+      height: 15px;
+      color: var(--text-soft);
+      flex-shrink: 0;
+    }
+    .music-volume-bar {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      background: #e5e5e5;
+      outline: none;
+      cursor: pointer;
+    }
+    .music-volume-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+    .music-loop-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-soft);
+      padding: 4px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+    .music-loop-btn:hover {
+      background: #f5f5f5;
+      color: var(--text);
+    }
+    .music-loop-btn.active {
+      color: var(--accent);
+    }
+    .music-loop-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    .music-empty-state {
+      text-align: center;
+      padding: 24px 12px;
+      color: var(--text-soft);
+      font-size: 0.78rem;
+    }
+    .music-empty-state svg {
+      width: 36px;
+      height: 36px;
+      color: #d4d4d4;
+      margin-bottom: 8px;
+      stroke-width: 1.4;
+    }
+    .music-loading {
+      text-align: center;
+      padding: 16px;
+      color: var(--text-soft);
+      font-size: 0.72rem;
+    }
+    .music-loading::after {
+      content: "";
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      border: 2px solid #e5e5e5;
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     @media (max-width: 600px) {
       .app { padding: 14px 12px 50px; }
       .header-inner { padding: 12px 14px; gap: 10px; }
@@ -720,7 +946,6 @@
       .badge-soldout { font-size: 0.62rem; padding: 3px 9px; }
       .badge-bestseller { font-size: 0.62rem; padding: 2px 8px; }
       .badge-bestseller svg { width: 10px; height: 10px; }
-      .soldout-toggle { top: 8px; right: 8px; padding: 3px 8px; font-size: 0.6rem; }
       .post-body { padding: 12px 14px 14px; }
       .post-caption { font-size: 0.9rem; }
       .post-desc { font-size: 0.78rem; }
@@ -759,6 +984,10 @@
       .extra-price { font-size: 0.62rem; }
 
       .checkout-body .btn-dark { padding: 12px; font-size: 0.82rem; }
+
+      .music-now-art { width: 44px; height: 44px; }
+      .music-ctrl-btn.play-btn { width: 40px; height: 40px; }
+      .music-result-art { width: 38px; height: 38px; }
     }
 
     @media (max-width: 380px) {
@@ -833,7 +1062,7 @@
     <div class="settings-tabs">
       <button class="tab-btn active" data-tab="currency"><i data-lucide="coins"></i> Mata Uang</button>
       <button class="tab-btn" data-tab="language"><i data-lucide="languages"></i> Bahasa</button>
-      <button class="tab-btn" data-tab="store"><i data-lucide="store"></i> Toko</button>
+      <button class="tab-btn" data-tab="music"><i data-lucide="music"></i> Musik</button>
     </div>
 
     <div class="settings-body">
@@ -886,34 +1115,62 @@
         <p class="hint">Perubahan bahasa akan diterapkan pada teks antarmuka secara otomatis.</p>
       </div>
 
-      <div class="tab-content" id="tab-store">
-        <div id="storeLockScreen" class="lock-screen">
-          <div class="lock-icon-wrap"><i data-lucide="lock"></i></div>
-          <p class="lock-title" data-i18n>Pengaturan Toko Terkunci</p>
-          <p class="lock-subtitle" data-i18n>Masukkan kunci untuk melanjutkan</p>
-          <input type="password" id="storePinInput" class="field-input lock-input" placeholder="••••" maxlength="8" inputmode="numeric" autocomplete="off" />
-          <button class="btn btn-dark lock-btn" id="storePinSubmit"><i data-lucide="unlock"></i> Buka</button>
-          <span class="lock-error" id="storePinError"></span>
-        </div>
-
-        <div id="storeSettingsContent" style="display: none">
-          <div class="toggle-row">
-            <span data-i18n>Status Toko Buka</span>
-            <label class="switch"><input type="checkbox" id="storeOpenToggle" checked /><span class="slider"></span></label>
-          </div>
-          <div class="toggle-row">
-            <span data-i18n>Mode Admin (Atur Stok)</span>
-            <label class="switch"><input type="checkbox" id="adminModeToggle" /><span class="slider"></span></label>
-          </div>
-          <p class="hint" style="margin-top: 10px" data-i18n>Aktifkan Mode Admin untuk menandai produk yang sedang habis.</p>
-
-          <div class="bestseller-section">
-            <p class="field-label">Atur Bestseller</p>
-            <p class="hint" style="margin-bottom: 4px">Aktifkan badge Bestseller pada produk pilihanmu.</p>
-            <div class="bestseller-list" id="bestsellerList"></div>
-            <p class="hint" style="margin-top: 10px"><span id="bestsellerCount">0</span> produk ditandai Bestseller.</p>
+      <!-- ================= TAB MUSIK ================= -->
+      <div class="tab-content" id="tab-music">
+        <div class="field-group">
+          <label class="field-label">Cari Lagu</label>
+          <div class="music-search-row">
+            <input type="text" id="musicSearchInput" class="field-input" placeholder="Judul lagu atau artis..." />
+            <button class="btn btn-dark" id="musicSearchBtn" style="padding: 11px 16px; border-radius: 14px;">
+              <i data-lucide="search"></i>
+            </button>
           </div>
         </div>
+
+        <div class="music-results" id="musicResults">
+          <div class="music-empty-state">
+            <i data-lucide="headphones"></i>
+            <p>Ketik judul lagu untuk mulai mencari.</p>
+          </div>
+        </div>
+
+        <div class="music-player" id="musicPlayerContainer" style="display:none">
+          <div class="music-now-playing">
+            <img class="music-now-art" id="musicNowArt" src="" alt="" />
+            <div class="music-now-info">
+              <div class="music-now-title" id="musicNowTitle">—</div>
+              <div class="music-now-artist" id="musicNowArtist">—</div>
+            </div>
+            <button class="music-loop-btn" id="musicLoopBtn" title="Mode Loop">
+              <i data-lucide="repeat"></i>
+            </button>
+          </div>
+
+          <div class="music-progress-wrap">
+            <span class="music-time" id="musicCurrentTime">0:00</span>
+            <input type="range" class="music-progress-bar" id="musicProgressBar" min="0" max="100" value="0" step="0.1" />
+            <span class="music-time" id="musicDuration">0:00</span>
+          </div>
+
+          <div class="music-controls">
+            <button class="music-ctrl-btn" id="musicPrevBtn" title="Sebelumnya">
+              <i data-lucide="skip-back"></i>
+            </button>
+            <button class="music-ctrl-btn play-btn" id="musicPlayBtn" title="Putar">
+              <i data-lucide="play"></i>
+            </button>
+            <button class="music-ctrl-btn" id="musicNextBtn" title="Berikutnya">
+              <i data-lucide="skip-forward"></i>
+            </button>
+          </div>
+
+          <div class="music-volume-row">
+            <i data-lucide="volume-2" id="musicVolumeIcon"></i>
+            <input type="range" class="music-volume-bar" id="musicVolumeBar" min="0" max="1" step="0.01" value="0.8" />
+          </div>
+        </div>
+
+        <audio id="musicAudio" crossorigin="anonymous"></audio>
       </div>
     </div>
   </div>
@@ -929,7 +1186,6 @@
     <div class="checkout-body">
       <h3 id="checkoutName"></h3>
 
-      <!-- SECTION 1: Pilih Harga -->
       <div class="checkout-section" data-tint="indigo">
         <div class="section-head">
           <span class="section-icon"><i data-lucide="tag"></i></span>
@@ -938,7 +1194,6 @@
         <div class="price-options" id="checkoutPriceOptions"></div>
       </div>
 
-      <!-- SECTION 2: Jumlah Pesanan (label kiri, qty kanan satu baris) -->
       <div class="checkout-section" data-tint="orange">
         <div class="section-head with-action">
           <div class="head-left">
@@ -953,7 +1208,6 @@
         </div>
       </div>
 
-      <!-- SECTION 3: Pilihan Pesanan -->
       <div class="checkout-section" data-tint="green">
         <div class="section-head">
           <span class="section-icon"><i data-lucide="truck"></i></span>
@@ -983,7 +1237,6 @@
         </div>
       </div>
 
-      <!-- SECTION 4: Tambah Varian (muncul saat Diantar) -->
       <div class="checkout-section" id="variantSection" data-tint="sky" style="display:none">
         <div class="section-head with-action">
           <div class="head-left">
@@ -999,7 +1252,6 @@
         </div>
       </div>
 
-      <!-- SECTION 5: Nama -->
       <div class="checkout-section" data-tint="pink">
         <div class="section-head">
           <span class="section-icon"><i data-lucide="user"></i></span>
@@ -1008,7 +1260,6 @@
         <input type="text" id="checkoutNameInput" class="buyer-name" placeholder="Nama kamu" autocomplete="name" />
       </div>
 
-      <!-- SECTION 6: Keterangan -->
       <div class="checkout-section" data-tint="violet">
         <div class="section-head">
           <span class="section-icon"><i data-lucide="message-square"></i></span>
@@ -1017,7 +1268,6 @@
         <textarea id="checkoutNoteInput" class="buyer-name" placeholder="Catatan tambahan (opsional)" rows="2"></textarea>
       </div>
 
-      <!-- Ringkasan Harga -->
       <div class="price-summary" id="priceSummary">
         <div class="price-row">
           <span>Subtotal</span>
@@ -1041,8 +1291,6 @@
 
   <script>
     const WA_NUMBER = "6285545216989";
-    const STORE_KEY = "1217";
-    const STORAGE_KEY = "jb_state_v1";
 
     let rates = {};
     let displayCurrency = "IDR";
@@ -1076,15 +1324,6 @@
     const conversionResult = document.getElementById("conversionResult");
     const displayCurrencySelect = document.getElementById("displayCurrency");
     const languageSelect = document.getElementById("languageSelect");
-    const storeOpenToggle = document.getElementById("storeOpenToggle");
-    const adminModeToggle = document.getElementById("adminModeToggle");
-    const storeLockScreen = document.getElementById("storeLockScreen");
-    const storeSettingsContent = document.getElementById("storeSettingsContent");
-    const storePinInput = document.getElementById("storePinInput");
-    const storePinSubmit = document.getElementById("storePinSubmit");
-    const storePinError = document.getElementById("storePinError");
-    const bestsellerList = document.getElementById("bestsellerList");
-    const bestsellerCount = document.getElementById("bestsellerCount");
     const checkoutOverlay = document.getElementById("checkoutOverlay");
     const checkoutModal = document.getElementById("checkoutModal");
     const checkoutClose = document.getElementById("checkoutClose");
@@ -1103,30 +1342,32 @@
     const ongkirValue = document.getElementById("ongkirValue");
     const totalValue = document.getElementById("totalValue");
 
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const state = JSON.parse(raw);
-        if (state && state.products) {
-          products.forEach((p) => {
-            const s = state.products[p.id];
-            if (s) {
-              if (typeof s.soldOut === "boolean") p.soldOut = s.soldOut;
-              if (typeof s.bestseller === "boolean") p.bestseller = s.bestseller;
-            }
-          });
-        }
-        if (state && typeof state.storeOpen === "boolean") storeOpen = state.storeOpen;
-      } catch (e) { console.warn("loadState failed", e); }
-    }
-    function saveState() {
-      try {
-        const state = { storeOpen, products: {} };
-        products.forEach((p) => { state.products[p.id] = { soldOut: !!p.soldOut, bestseller: !!p.bestseller }; });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) { console.warn("saveState failed", e); }
-    }
+    /* ===== MUSIC ELEMENTS ===== */
+    const musicSearchInput = document.getElementById("musicSearchInput");
+    const musicSearchBtn = document.getElementById("musicSearchBtn");
+    const musicResults = document.getElementById("musicResults");
+    const musicPlayerContainer = document.getElementById("musicPlayerContainer");
+    const musicNowArt = document.getElementById("musicNowArt");
+    const musicNowTitle = document.getElementById("musicNowTitle");
+    const musicNowArtist = document.getElementById("musicNowArtist");
+    const musicCurrentTime = document.getElementById("musicCurrentTime");
+    const musicDuration = document.getElementById("musicDuration");
+    const musicProgressBar = document.getElementById("musicProgressBar");
+    const musicPlayBtn = document.getElementById("musicPlayBtn");
+    const musicPrevBtn = document.getElementById("musicPrevBtn");
+    const musicNextBtn = document.getElementById("musicNextBtn");
+    const musicVolumeBar = document.getElementById("musicVolumeBar");
+    const musicVolumeIcon = document.getElementById("musicVolumeIcon");
+    const musicLoopBtn = document.getElementById("musicLoopBtn");
+    const musicAudio = document.getElementById("musicAudio");
+
+    /* ===== MUSIC STATE ===== */
+    const MUSIC_API_BASE = "https://discoveryprovider.audius.co/v1";
+    const MUSIC_APP_NAME = "JajananIbnuShiva";
+    let musicSearchTimeout = null;
+    let musicQueue = [];
+    let musicCurrentIndex = -1;
+    let musicLoopMode = 0; // 0 = off, 1 = loop all, 2 = loop one
 
     function createParticles() {
       const container = document.getElementById("particles");
@@ -1144,6 +1385,7 @@
     }
 
     function formatPrice(priceIDR) {
+      if (priceIDR === undefined || priceIDR === null) return "—";
       if (displayCurrency === "IDR") return "Rp " + priceIDR.toLocaleString("id-ID");
       const rate = rates[displayCurrency];
       if (!rate) return "Rp " + priceIDR.toLocaleString("id-ID");
@@ -1159,20 +1401,6 @@
       if (p.soldOut) html += `<span class="badge-soldout">Habis</span>`;
       return html;
     }
-    function updateCardBadges(productId) {
-      const p = products.find((x) => x.id === productId);
-      if (!p) return;
-      const card = document.querySelector(`.product-card[data-id="${productId}"]`);
-      if (!card) return;
-      const container = card.querySelector(".badges-tl");
-      if (container) container.innerHTML = badgeHTML(p);
-      const buyBtn = card.querySelector(".btn-buy");
-      if (buyBtn) {
-        if (p.soldOut) { buyBtn.disabled = true; buyBtn.innerHTML = '<i data-lucide="ban"></i> Habis'; }
-        else { buyBtn.disabled = false; buyBtn.innerHTML = '<i data-lucide="shopping-bag"></i> Pilih'; }
-      }
-      if (window.lucide) lucide.createIcons();
-    }
 
     function renderProducts() {
       productsGrid.innerHTML = "";
@@ -1187,21 +1415,12 @@
               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
             <div class="product-img-fallback" style="display:none"><i data-lucide="${p.icon}"></i></div>
             <div class="badges-tl">${badgeHTML(p)}</div>
-            <label class="soldout-toggle admin-only" style="display:none">
-              <input type="checkbox" class="soldout-checkbox" ${p.soldOut ? "checked" : ""} /> Habis
-            </label>
           </div>
           <div class="product-body">
             <h3 class="product-name">${p.name}</h3>
             <button class="btn btn-dark btn-buy" ${p.soldOut ? "disabled" : ""}>${buyBtnContent}</button>
           </div>
         `;
-        const soldOutCheckbox = card.querySelector(".soldout-checkbox");
-        soldOutCheckbox.addEventListener("change", (e) => {
-          p.soldOut = e.target.checked;
-          updateCardBadges(p.id);
-          saveState();
-        });
         const buyBtn = card.querySelector(".btn-buy");
         buyBtn.addEventListener("click", () => {
           if (p.soldOut) return;
@@ -1209,7 +1428,6 @@
         });
         productsGrid.appendChild(card);
       });
-      updateAdminVisibility();
       if (window.lucide) lucide.createIcons();
     }
 
@@ -1266,35 +1484,6 @@
       });
     }
 
-    function renderBestsellerList() {
-      if (!bestsellerList) return;
-      bestsellerList.innerHTML = products.map((p) => `
-        <div class="bestseller-item">
-          <span>${p.name}</span>
-          <label class="switch">
-            <input type="checkbox" data-product-id="${p.id}" ${p.bestseller ? "checked" : ""} />
-            <span class="slider"></span>
-          </label>
-        </div>
-      `).join("");
-      bestsellerList.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-        cb.addEventListener("change", (e) => {
-          const pid = e.target.dataset.productId;
-          const p = products.find((x) => x.id === pid);
-          if (!p) return;
-          p.bestseller = e.target.checked;
-          updateCardBadges(pid);
-          updateBestsellerCount();
-          saveState();
-        });
-      });
-      updateBestsellerCount();
-    }
-    function updateBestsellerCount() {
-      if (!bestsellerCount) return;
-      bestsellerCount.textContent = products.filter((p) => p.bestseller).length;
-    }
-
     function getTotalQuantity() {
       let total = checkoutState.quantity;
       Object.values(checkoutState.extras).forEach((e) => { total += e.quantity; });
@@ -1304,11 +1493,15 @@
     function getSubtotal() {
       let total = 0;
       if (checkoutState.product) {
-        total += checkoutState.product.prices[checkoutState.priceType] * checkoutState.quantity;
+        const price = checkoutState.product.prices[checkoutState.priceType];
+        if (price) total += price * checkoutState.quantity;
       }
       Object.entries(checkoutState.extras).forEach(([id, ext]) => {
         const p = products.find((x) => x.id === id);
-        if (p) total += p.prices[ext.priceType] * ext.quantity;
+        if (p) {
+          const price = p.prices[ext.priceType];
+          if (price) total += price * ext.quantity;
+        }
       });
       return total;
     }
@@ -1370,15 +1563,27 @@
         const card = document.createElement("div");
         card.className = "extra-card" + (isAdded ? " active" : "");
 
+        const hasReguler = p.prices.reguler !== undefined;
+        const hasJumbo = p.prices.jumbo !== undefined;
+
         if (isAdded) {
+          let sizeSelectHTML = "";
+          if (hasReguler && hasJumbo) {
+            sizeSelectHTML = `
+              <select class="extra-size-select" data-id="${p.id}">
+                <option value="reguler" ${ext.priceType === "reguler" ? "selected" : ""}>Reguler · ${formatPrice(p.prices.reguler)}</option>
+                <option value="jumbo" ${ext.priceType === "jumbo" ? "selected" : ""}>Jumbo · ${formatPrice(p.prices.jumbo)}</option>
+              </select>`;
+          } else if (hasJumbo) {
+            sizeSelectHTML = `<div class="extra-price">Jumbo · ${formatPrice(p.prices.jumbo)}</div>`;
+          } else if (hasReguler) {
+            sizeSelectHTML = `<div class="extra-price">Reguler · ${formatPrice(p.prices.reguler)}</div>`;
+          }
           card.innerHTML = `
             <img class="extra-img" src="${p.img}" alt="${p.name}"
               onerror="this.style.opacity=0.3" />
             <div class="extra-name">${p.name}</div>
-            <select class="extra-size-select" data-id="${p.id}">
-              <option value="reguler" ${ext.priceType === "reguler" ? "selected" : ""}>Reguler · ${formatPrice(p.prices.reguler)}</option>
-              <option value="jumbo" ${ext.priceType === "jumbo" ? "selected" : ""}>Jumbo · ${formatPrice(p.prices.jumbo)}</option>
-            </select>
+            ${sizeSelectHTML}
             <div class="extra-qty-row">
               <button class="extra-qty-btn" data-action="minus" data-id="${p.id}" aria-label="Kurangi">−</button>
               <span class="extra-qty-value">${ext.quantity}</span>
@@ -1386,11 +1591,12 @@
             </div>
           `;
         } else {
+          let basePrice = hasReguler ? p.prices.reguler : p.prices.jumbo;
           card.innerHTML = `
             <img class="extra-img" src="${p.img}" alt="${p.name}"
               onerror="this.style.opacity=0.3" />
             <div class="extra-name">${p.name}</div>
-            <div class="extra-price">${formatPrice(p.prices.reguler)}</div>
+            <div class="extra-price">${formatPrice(basePrice)}</div>
             <button class="extra-add-btn" data-id="${p.id}"><i data-lucide="plus"></i> Tambah</button>
           `;
         }
@@ -1400,7 +1606,10 @@
       variantGrid.querySelectorAll(".extra-add-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.id;
-          checkoutState.extras[id] = { priceType: "reguler", quantity: 1 };
+          const p = products.find((x) => x.id === id);
+          if (!p) return;
+          const defaultType = p.prices.reguler !== undefined ? "reguler" : "jumbo";
+          checkoutState.extras[id] = { priceType: defaultType, quantity: 1 };
           renderVariantGrid();
           updateSummary();
           updateProgress();
@@ -1443,7 +1652,8 @@
       closeSettings();
 
       checkoutState.product = product;
-      checkoutState.priceType = "reguler";
+      // Pilih tipe harga default yang tersedia
+      checkoutState.priceType = product.prices.reguler !== undefined ? "reguler" : "jumbo";
       checkoutState.quantity = 1;
       checkoutState.orderType = null;
       checkoutState.extras = {};
@@ -1467,16 +1677,22 @@
       document.getElementById("checkoutName").textContent = product.name;
 
       const priceOptions = document.getElementById("checkoutPriceOptions");
-      priceOptions.innerHTML = `
-        <label class="price-chip">
-          <input type="radio" name="checkoutPrice" value="reguler" checked />
-          <span>Reguler <span class="price" data-price-type="reguler">${formatPrice(product.prices.reguler)}</span></span>
-        </label>
-        <label class="price-chip">
-          <input type="radio" name="checkoutPrice" value="jumbo" />
-          <span>Jumbo <span class="price" data-price-type="jumbo">${formatPrice(product.prices.jumbo)}</span></span>
-        </label>
-      `;
+      let priceHTML = "";
+      if (product.prices.reguler !== undefined) {
+        priceHTML += `
+          <label class="price-chip">
+            <input type="radio" name="checkoutPrice" value="reguler" ${checkoutState.priceType === "reguler" ? "checked" : ""} />
+            <span>Reguler <span class="price" data-price-type="reguler">${formatPrice(product.prices.reguler)}</span></span>
+          </label>`;
+      }
+      if (product.prices.jumbo !== undefined) {
+        priceHTML += `
+          <label class="price-chip">
+            <input type="radio" name="checkoutPrice" value="jumbo" ${checkoutState.priceType === "jumbo" ? "checked" : ""} />
+            <span>Jumbo <span class="price" data-price-type="jumbo">${formatPrice(product.prices.jumbo)}</span></span>
+          </label>`;
+      }
+      priceOptions.innerHTML = priceHTML;
       priceOptions.querySelectorAll('input[type="radio"]').forEach((r) => {
         r.addEventListener("change", () => {
           checkoutState.priceType = r.value;
@@ -1565,9 +1781,6 @@
       }
     });
 
-    /* =============================================================
-       FORMAT PESAN WHATSAPP — SOPAN, ELEGAN, SEOLAH DARI PEMBELI
-       ============================================================= */
     checkoutSendBtn.addEventListener("click", () => {
       if (!checkoutState.product) return;
       if (checkoutState.orderType === "diantar" && getTotalQuantity() < MIN_DELIVERY_QTY) return;
@@ -1579,12 +1792,10 @@
 
       const sep = "━━━━━━━━━━━━━━━";
 
-      // ——— Sapaan pembuka (sopan & elegan) ———
       let message = `Halo Kak 👋\n\n`;
       message += `Saya memesan di *Jajanan Ibnu-Shiva* 🙏\n`;
       message += `Berikut detail pesanan saya:\n\n`;
 
-      // ——— Blok detail pesanan ———
       message += `${sep}\n`;
       message += `🛒 *DETAIL PESANAN*\n`;
       message += `${sep}\n`;
@@ -1609,7 +1820,6 @@
       const ongkir = getOngkir();
       const total = subtotal + ongkir;
 
-      // ——— Blok ringkasan pembayaran ———
       message += `\n${sep}\n`;
       message += `🧾 *RINGKASAN PEMBAYARAN*\n`;
       message += `${sep}\n`;
@@ -1619,7 +1829,6 @@
       }
       message += `*Total     : ${formatPrice(total)}*\n`;
 
-      // ——— Blok metode pengiriman ———
       message += `\n${sep}\n`;
       message += `📍 *METODE PENGIRIMAN*\n`;
       message += `${sep}\n`;
@@ -1630,18 +1839,15 @@
         message += `Bayar / Ambil di Toko\n`;
       }
 
-      // ——— Blok data pemesan ———
       message += `\n${sep}\n`;
       message += `👤 *DATA PEMESAN*\n`;
       message += `${sep}\n`;
       message += `Nama : ${buyerName}\n`;
 
-      // ——— Catatan (opsional) ———
       if (checkoutState.note.trim()) {
         message += `\n📝 *Catatan:*\n${checkoutState.note.trim()}\n`;
       }
 
-      // ——— Penutup sopan ———
       message += `\n${sep}\n`;
       message += `Mohon dikonfirmasi ketersediaannya ya, Kak 🙏\n`;
       message += `Terima kasih banyak atas pelayanannya ✨\n\n`;
@@ -1732,42 +1938,7 @@
     function updateStoreStatus() {
       storeStatus.textContent = storeOpen ? "Toko Buka" : "Toko Tutup";
       storeStatus.className = "badge " + (storeOpen ? "badge-open" : "badge-closed");
-      if (storeOpenToggle) storeOpenToggle.checked = storeOpen;
     }
-    function updateAdminVisibility() {
-      const isAdmin = adminModeToggle.checked;
-      document.querySelectorAll(".admin-only").forEach((el) => {
-        el.style.display = isAdmin ? "flex" : "none";
-      });
-    }
-    function resetStoreLock() {
-      storeLockScreen.style.display = "block";
-      storeSettingsContent.style.display = "none";
-      storePinInput.value = "";
-      storePinError.textContent = "";
-      storePinError.classList.remove("shake");
-    }
-    function tryUnlockStore() {
-      const val = storePinInput.value.trim();
-      if (val === STORE_KEY) {
-        storeLockScreen.style.display = "none";
-        storeSettingsContent.style.display = "block";
-        storePinError.textContent = "";
-        renderBestsellerList();
-        if (window.lucide) lucide.createIcons();
-      } else {
-        storePinError.textContent = "Kunci salah, coba lagi";
-        storePinError.classList.remove("shake");
-        void storePinError.offsetWidth;
-        storePinError.classList.add("shake");
-        storePinInput.value = "";
-        storePinInput.focus();
-      }
-    }
-    storePinSubmit.addEventListener("click", tryUnlockStore);
-    storePinInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); tryUnlockStore(); }
-    });
 
     function openSettings() {
       closeCheckout();
@@ -1790,11 +1961,8 @@
         tabBtns.forEach((b) => b.classList.remove("active"));
         tabContents.forEach((c) => c.classList.remove("active"));
         btn.classList.add("active");
-        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
-        if (btn.dataset.tab === "store") {
-          resetStoreLock();
-          setTimeout(() => storePinInput.focus(), 200);
-        }
+        const target = document.getElementById("tab-" + btn.dataset.tab);
+        if (target) target.classList.add("active");
       });
     });
 
@@ -1809,13 +1977,6 @@
 
     languageSelect.addEventListener("change", () => applyLanguage(languageSelect.value));
 
-    storeOpenToggle.addEventListener("change", () => {
-      storeOpen = storeOpenToggle.checked;
-      updateStoreStatus();
-      saveState();
-    });
-    adminModeToggle.addEventListener("change", updateAdminVisibility);
-
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         if (checkoutModal.classList.contains("active")) closeCheckout();
@@ -1823,18 +1984,241 @@
       }
     });
 
-    loadState();
+    /* ============================================================
+       MUSIC PLAYER LOGIC
+       ============================================================ */
+
+    function formatMusicTime(seconds) {
+      if (!seconds || isNaN(seconds)) return "0:00";
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return `${m}:${s.toString().padStart(2, "0")}`;
+    }
+
+    async function searchMusic(query) {
+      if (!query || query.trim().length === 0) {
+        musicResults.innerHTML = `<div class="music-empty-state"><i data-lucide="headphones"></i><p>Ketik judul lagu untuk mulai mencari.</p></div>`;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      musicResults.innerHTML = `<div class="music-loading">Mencari lagu...</div>`;
+
+      try {
+        const url = `${MUSIC_API_BASE}/tracks/search?query=${encodeURIComponent(query)}&app_name=${MUSIC_APP_NAME}&limit=15`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Gagal mengambil data");
+        const json = await res.json();
+        const tracks = json.data || [];
+
+        if (tracks.length === 0) {
+          musicResults.innerHTML = `<div class="music-empty-state"><i data-lucide="music-2"></i><p>Tidak ada hasil untuk "${query}".</p></div>`;
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+
+        musicQueue = tracks;
+        renderMusicResults(tracks);
+      } catch (e) {
+        musicResults.innerHTML = `<div class="music-empty-state"><i data-lucide="wifi-off"></i><p>Gagal memuat. Periksa koneksi internet.</p></div>`;
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    function renderMusicResults(tracks) {
+      musicResults.innerHTML = "";
+      tracks.forEach((track, index) => {
+        const item = document.createElement("div");
+        item.className = "music-result-item";
+        item.dataset.index = index;
+
+        const artUrl = track.artwork?.["150x150"] || track.artwork?.["480x480"] || "";
+        const title = track.title || "Tanpa Judul";
+        const artist = track.user?.name || track.user?.handle || "Artis Tidak Dikenal";
+        const dur = track.duration ? formatMusicTime(track.duration) : "";
+
+        item.innerHTML = `
+          <img class="music-result-art" src="${artUrl}" alt="" loading="lazy" onerror="this.style.opacity=0.2" />
+          <div class="music-result-info">
+            <div class="music-result-title">${title}</div>
+            <div class="music-result-artist">${artist}</div>
+          </div>
+          <span class="music-result-duration">${dur}</span>
+        `;
+
+        item.addEventListener("click", () => playMusicTrack(index));
+        musicResults.appendChild(item);
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function playMusicTrack(index) {
+      if (index < 0 || index >= musicQueue.length) return;
+      musicCurrentIndex = index;
+      const track = musicQueue[index];
+
+      const streamUrl = `${MUSIC_API_BASE}/tracks/${track.id}/stream?app_name=${MUSIC_APP_NAME}`;
+      musicAudio.src = streamUrl;
+      musicAudio.load();
+
+      const artUrl = track.artwork?.["480x480"] || track.artwork?.["150x150"] || "";
+      musicNowArt.src = artUrl;
+      musicNowArt.style.display = artUrl ? "block" : "none";
+      musicNowTitle.textContent = track.title || "Tanpa Judul";
+      musicNowArtist.textContent = track.user?.name || track.user?.handle || "Artis Tidak Dikenal";
+
+      musicPlayerContainer.style.display = "block";
+      musicProgressBar.value = 0;
+      musicCurrentTime.textContent = "0:00";
+
+      musicAudio.play().catch((err) => {
+        console.warn("Playback gagal:", err);
+        musicPlayBtn.innerHTML = '<i data-lucide="play"></i>';
+        if (window.lucide) lucide.createIcons();
+      });
+
+      // Update active state in results
+      document.querySelectorAll(".music-result-item").forEach((el) => el.classList.remove("playing"));
+      const activeItem = musicResults.querySelector(`[data-index="${index}"]`);
+      if (activeItem) activeItem.classList.add("playing");
+
+      updatePlayButton(true);
+    }
+
+    function updatePlayButton(isPlaying) {
+      if (isPlaying) {
+        musicPlayBtn.innerHTML = '<i data-lucide="pause"></i>';
+      } else {
+        musicPlayBtn.innerHTML = '<i data-lucide="play"></i>';
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function updateVolumeIcon() {
+      const vol = musicAudio.volume;
+      if (vol === 0) musicVolumeIcon.setAttribute("data-lucide", "volume-x");
+      else if (vol < 0.5) musicVolumeIcon.setAttribute("data-lucide", "volume-1");
+      else musicVolumeIcon.setAttribute("data-lucide", "volume-2");
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Music event listeners
+    musicSearchBtn.addEventListener("click", () => {
+      searchMusic(musicSearchInput.value);
+    });
+
+    musicSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        clearTimeout(musicSearchTimeout);
+        searchMusic(musicSearchInput.value);
+      }
+    });
+
+    musicSearchInput.addEventListener("input", () => {
+      clearTimeout(musicSearchTimeout);
+      musicSearchTimeout = setTimeout(() => {
+        if (musicSearchInput.value.trim().length >= 2) {
+          searchMusic(musicSearchInput.value);
+        }
+      }, 500);
+    });
+
+    musicPlayBtn.addEventListener("click", () => {
+      if (!musicAudio.src) {
+        // If no track selected, play first result
+        if (musicQueue.length > 0) playMusicTrack(0);
+        return;
+      }
+      if (musicAudio.paused) {
+        musicAudio.play().catch(() => {});
+      } else {
+        musicAudio.pause();
+      }
+    });
+
+    musicAudio.addEventListener("play", () => updatePlayButton(true));
+    musicAudio.addEventListener("pause", () => updatePlayButton(false));
+
+    musicAudio.addEventListener("timeupdate", () => {
+      if (!musicAudio.duration) return;
+      const pct = (musicAudio.currentTime / musicAudio.duration) * 100;
+      musicProgressBar.value = pct;
+      musicCurrentTime.textContent = formatMusicTime(musicAudio.currentTime);
+    });
+
+    musicAudio.addEventListener("loadedmetadata", () => {
+      musicDuration.textContent = formatMusicTime(musicAudio.duration);
+    });
+
+    musicAudio.addEventListener("ended", () => {
+      if (musicLoopMode === 2) {
+        // Loop one
+        musicAudio.currentTime = 0;
+        musicAudio.play().catch(() => {});
+      } else if (musicLoopMode === 1) {
+        // Loop all
+        const next = (musicCurrentIndex + 1) % musicQueue.length;
+        playMusicTrack(next);
+      } else {
+        // No loop — play next if available, else stop
+        if (musicCurrentIndex < musicQueue.length - 1) {
+          playMusicTrack(musicCurrentIndex + 1);
+        } else {
+          updatePlayButton(false);
+        }
+      }
+    });
+
+    musicAudio.addEventListener("error", () => {
+      musicPlayBtn.innerHTML = '<i data-lucide="play"></i>';
+      if (window.lucide) lucide.createIcons();
+    });
+
+    musicProgressBar.addEventListener("input", () => {
+      if (!musicAudio.duration) return;
+      const seekTime = (musicProgressBar.value / 100) * musicAudio.duration;
+      musicAudio.currentTime = seekTime;
+    });
+
+    musicVolumeBar.addEventListener("input", () => {
+      musicAudio.volume = parseFloat(musicVolumeBar.value);
+      updateVolumeIcon();
+    });
+
+    musicPrevBtn.addEventListener("click", () => {
+      if (musicQueue.length === 0) return;
+      const prev = musicCurrentIndex > 0 ? musicCurrentIndex - 1 : musicQueue.length - 1;
+      playMusicTrack(prev);
+    });
+
+    musicNextBtn.addEventListener("click", () => {
+      if (musicQueue.length === 0) return;
+      const next = (musicCurrentIndex + 1) % musicQueue.length;
+      playMusicTrack(next);
+    });
+
+    musicLoopBtn.addEventListener("click", () => {
+      musicLoopMode = (musicLoopMode + 1) % 3;
+      const icons = ["repeat", "repeat", "repeat-1"];
+      musicLoopBtn.innerHTML = `<i data-lucide="${icons[musicLoopMode]}"></i>`;
+      musicLoopBtn.classList.toggle("active", musicLoopMode > 0);
+      if (window.lucide) lucide.createIcons();
+    });
+
+    // Set initial volume
+    musicAudio.volume = 0.8;
+    updateVolumeIcon();
+
+    /* ===== INIT ===== */
     createParticles();
     renderProducts();
     renderPosts();
     setupContentNav();
-    renderBestsellerList();
     fetchRates();
     updateStoreStatus();
-    resetStoreLock();
 
     document.querySelectorAll(
-      "h1, h2, .field-label, .info-label, .info-value, .btn, .tab-btn, .hint, .badge, .lock-title, .lock-subtitle, .toggle-row span"
+      "h1, h2, .field-label, .info-label, .info-value, .btn, .tab-btn, .hint"
     ).forEach((el) => { if (!el.hasAttribute("data-i18n")) el.setAttribute("data-i18n", ""); });
 
     if (window.lucide) lucide.createIcons();
