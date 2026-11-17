@@ -19,6 +19,13 @@
     /*
       soldOut   : true → tombol "Pilih" nonaktif + badge "Habis"
       bestseller: true → badge "Bestseller" muncul di atas gambar
+
+      createdAtOffset (opsional) : berapa milidetik yang lalu postingan dibuat
+                                  saat pertama kali halaman dimuat.
+                                  Contoh: 2 * 60 * 1000 = 2 menit lalu
+                                          3 * 60 * 60 * 1000 = 3 jam lalu
+                                          2 * 24 * 60 * 60 * 1000 = 2 hari lalu
+      createdAt (opsional) : timestamp tetap (ISO string / ms) — diabaikan jika createdAtOffset ada
     */
     const products = [
       { id: "ubi",      name: "Es Ubi Ungu",          prices: { reguler: 6000,  jumbo: 10000 }, img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/cuxa27yrrg", icon: "cup-soda",  soldOut: false, bestseller: true  },
@@ -33,9 +40,9 @@
     ];
 
     const posts = [
-      { id: "post1", img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/u6koy4r3jg", caption: "Ubi Ungu nya baru matang gays", desc: "Sabarr yaa" },
-      { id: "post2", img: "https://files.catbox.moe/durian.png", caption: "", desc: "" },
-      { id: "post3", img: "https://files.catbox.moe/durian.png", caption: "Hanya Caption Tanpa Deskripsi", desc: "" },
+      { id: "post1", img: "https://ganga--link--ghhzdp9sv8hk.code.run/i/4ipr7txznk", caption: "Panas panas gini enak nya yang seger segerrr", desc: "", createdAtOffset: 10 * 1000 },
+      { id: "post2", img: "https://files.catbox.moe/durian.png", caption: "", desc: "", createdAtOffset: 3 * 60 * 60 * 1000 },
+      { id: "post3", img: "https://files.catbox.moe/durian.png", caption: "Hanya Caption Tanpa Deskripsi", desc: "", createdAtOffset: 2 * 24 * 60 * 60 * 1000 },
     ];
   </script>
 
@@ -220,6 +227,21 @@
     .post-body { padding: 14px 18px 16px; }
     .post-caption { font-size: 0.98rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--text); line-height: 1.35; }
     .post-desc { font-size: 0.82rem; color: var(--text-soft); line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+
+    /* ===== POST TIME (real-time like Instagram/TikTok) ===== */
+    .post-time {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.72rem; font-weight: 500; color: var(--text-soft);
+      margin-top: 10px; letter-spacing: 0.01em;
+      padding: 4px 10px; background: #f7f7f8;
+      border-radius: 999px; cursor: default; user-select: none;
+      transition: all 0.3s ease;
+    }
+    .post-time:hover { background: #f0f0f0; color: var(--text); }
+    .post-time svg { width: 12px; height: 12px; stroke-width: 2.2; opacity: 0.7; flex-shrink: 0; }
+    .post-time-text { line-height: 1; }
+    .post-time-text.just-now { color: #16a34a; font-weight: 600; }
+
     .posts-empty { text-align: center; padding: 40px 20px; color: var(--text-soft); font-size: 0.85rem; }
     .posts-empty svg { width: 40px; height: 40px; color: #d4d4d4; margin-bottom: 10px; stroke-width: 1.4; }
 
@@ -949,6 +971,8 @@
       .post-body { padding: 12px 14px 14px; }
       .post-caption { font-size: 0.9rem; }
       .post-desc { font-size: 0.78rem; }
+      .post-time { font-size: 0.66rem; margin-top: 8px; padding: 3px 8px; }
+      .post-time svg { width: 11px; height: 11px; }
       .info-card { padding: 14px; }
       .btn-outline { font-size: 0.74rem; padding: 8px 12px; }
 
@@ -1115,7 +1139,6 @@
         <p class="hint">Perubahan bahasa akan diterapkan pada teks antarmuka secara otomatis.</p>
       </div>
 
-      <!-- ================= TAB MUSIK ================= -->
       <div class="tab-content" id="tab-music">
         <div class="field-group">
           <label class="field-label">Cari Lagu</label>
@@ -1175,7 +1198,6 @@
     </div>
   </div>
 
-  <!-- ================= CHECKOUT MODAL ================= -->
   <div class="checkout-overlay" id="checkoutOverlay"></div>
   <div class="checkout-modal" id="checkoutModal">
     <button class="checkout-close" id="checkoutClose" aria-label="Tutup"><i data-lucide="x"></i></button>
@@ -1367,7 +1389,85 @@
     let musicSearchTimeout = null;
     let musicQueue = [];
     let musicCurrentIndex = -1;
-    let musicLoopMode = 0; // 0 = off, 1 = loop all, 2 = loop one
+    let musicLoopMode = 0;
+
+    /* ============================================================
+       POST TIME SYSTEM (real-time like Instagram/TikTok)
+       ============================================================ */
+    const POST_TIME_STORAGE_PREFIX = "jis_post_created_";
+    const postTimeRefreshInterval = 1000; // update tiap detik
+
+    function getOrInitPostTime(post) {
+      // 1) Prioritas: createdAt eksplisit (ISO string / number ms)
+      if (post.createdAt !== undefined && post.createdAt !== null) {
+        return typeof post.createdAt === "number"
+          ? post.createdAt
+          : new Date(post.createdAt).getTime();
+      }
+
+      // 2) Cek localStorage — kalau sudah pernah dibuat, lanjutkan waktunya
+      const key = POST_TIME_STORAGE_PREFIX + post.id;
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored) {
+          const ts = parseInt(stored, 10);
+          if (!isNaN(ts)) return ts;
+        }
+      } catch (e) { /* localStorage mungkin diblokir */ }
+
+      // 3) Pertama kali lihat post ini → hitung createdAt & simpan
+      const offset = typeof post.createdAtOffset === "number" ? post.createdAtOffset : 0;
+      const ts = Date.now() - offset;
+      try { localStorage.setItem(key, ts.toString()); } catch (e) {}
+      return ts;
+    }
+
+    function formatRelativeTime(timestamp) {
+      const now = Date.now();
+      const diff = Math.max(0, now - timestamp);
+      const sec = Math.floor(diff / 1000);
+      const min = Math.floor(sec / 60);
+      const hour = Math.floor(min / 60);
+      const day = Math.floor(hour / 24);
+      const week = Math.floor(day / 7);
+
+      if (sec < 60) return "Baru saja";
+      if (min < 60) return min + " menit lalu";
+      if (hour < 24) return hour + " jam lalu";
+      if (day < 7) return day + " hari lalu";
+      if (week < 4) return week + " minggu lalu";
+      return new Date(timestamp).toLocaleDateString("id-ID", {
+        day: "numeric", month: "short", year: "numeric",
+      });
+    }
+
+    function formatAbsoluteTime(timestamp) {
+      try {
+        return new Date(timestamp).toLocaleString("id-ID", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } catch { return ""; }
+    }
+
+    function updateAllPostTimes() {
+      const now = Date.now();
+      document.querySelectorAll(".post-time[data-created-at]").forEach((el) => {
+        const ts = parseInt(el.dataset.createdAt, 10);
+        if (isNaN(ts)) return;
+        const textEl = el.querySelector(".post-time-text");
+        if (!textEl) return;
+        const newText = formatRelativeTime(ts);
+        if (textEl.textContent !== newText) {
+          textEl.textContent = newText;
+          textEl.classList.toggle("just-now", (now - ts) < 60000);
+        }
+      });
+    }
 
     function createParticles() {
       const container = document.getElementById("particles");
@@ -1449,25 +1549,51 @@
         img.loading = "lazy";
         img.onerror = () => { card.style.display = "none"; };
         card.appendChild(img);
+
         const hasCaption = post.caption && String(post.caption).trim().length > 0;
         const hasDesc = post.desc && String(post.desc).trim().length > 0;
-        if (hasCaption || hasDesc) {
-          const body = document.createElement("div");
-          body.className = "post-body";
-          if (hasCaption) {
-            const cap = document.createElement("h3");
-            cap.className = "post-caption"; cap.textContent = post.caption;
-            body.appendChild(cap);
-          }
-          if (hasDesc) {
-            const desc = document.createElement("p");
-            desc.className = "post-desc"; desc.textContent = post.desc;
-            body.appendChild(desc);
-          }
-          card.appendChild(body);
+
+        // Body selalu dibuat agar timestamp tetap tampil
+        const body = document.createElement("div");
+        body.className = "post-body";
+
+        if (hasCaption) {
+          const cap = document.createElement("h3");
+          cap.className = "post-caption"; cap.textContent = post.caption;
+          body.appendChild(cap);
         }
+        if (hasDesc) {
+          const desc = document.createElement("p");
+          desc.className = "post-desc"; desc.textContent = post.desc;
+          body.appendChild(desc);
+        }
+
+        // ===== TIMESTAMP REAL-TIME =====
+        const createdAt = getOrInitPostTime(post);
+        const timeEl = document.createElement("div");
+        timeEl.className = "post-time";
+        timeEl.dataset.createdAt = createdAt;
+        timeEl.title = formatAbsoluteTime(createdAt);
+
+        const icon = document.createElement("i");
+        icon.setAttribute("data-lucide", "clock");
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "post-time-text";
+        const relText = formatRelativeTime(createdAt);
+        textSpan.textContent = relText;
+        if ((Date.now() - createdAt) < 60000) textSpan.classList.add("just-now");
+
+        timeEl.appendChild(icon);
+        timeEl.appendChild(textSpan);
+        body.appendChild(timeEl);
+
+        card.appendChild(body);
         postsGrid.appendChild(card);
       });
+      if (window.lucide) lucide.createIcons();
+      // Pastikan waktu langsung update sekali setelah render
+      updateAllPostTimes();
     }
 
     function setupContentNav() {
@@ -1480,6 +1606,7 @@
           const panel = document.getElementById("panel-" + target);
           if (panel) panel.classList.add("active");
           if (window.lucide) lucide.createIcons();
+          if (target === "posts") updateAllPostTimes();
         });
       });
     }
@@ -1652,7 +1779,6 @@
       closeSettings();
 
       checkoutState.product = product;
-      // Pilih tipe harga default yang tersedia
       checkoutState.priceType = product.prices.reguler !== undefined ? "reguler" : "jumbo";
       checkoutState.quantity = 1;
       checkoutState.orderType = null;
@@ -2077,7 +2203,6 @@
         if (window.lucide) lucide.createIcons();
       });
 
-      // Update active state in results
       document.querySelectorAll(".music-result-item").forEach((el) => el.classList.remove("playing"));
       const activeItem = musicResults.querySelector(`[data-index="${index}"]`);
       if (activeItem) activeItem.classList.add("playing");
@@ -2102,7 +2227,6 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // Music event listeners
     musicSearchBtn.addEventListener("click", () => {
       searchMusic(musicSearchInput.value);
     });
@@ -2125,7 +2249,6 @@
 
     musicPlayBtn.addEventListener("click", () => {
       if (!musicAudio.src) {
-        // If no track selected, play first result
         if (musicQueue.length > 0) playMusicTrack(0);
         return;
       }
@@ -2152,15 +2275,12 @@
 
     musicAudio.addEventListener("ended", () => {
       if (musicLoopMode === 2) {
-        // Loop one
         musicAudio.currentTime = 0;
         musicAudio.play().catch(() => {});
       } else if (musicLoopMode === 1) {
-        // Loop all
         const next = (musicCurrentIndex + 1) % musicQueue.length;
         playMusicTrack(next);
       } else {
-        // No loop — play next if available, else stop
         if (musicCurrentIndex < musicQueue.length - 1) {
           playMusicTrack(musicCurrentIndex + 1);
         } else {
@@ -2205,7 +2325,6 @@
       if (window.lucide) lucide.createIcons();
     });
 
-    // Set initial volume
     musicAudio.volume = 0.8;
     updateVolumeIcon();
 
@@ -2220,6 +2339,13 @@
     document.querySelectorAll(
       "h1, h2, .field-label, .info-label, .info-value, .btn, .tab-btn, .hint"
     ).forEach((el) => { if (!el.hasAttribute("data-i18n")) el.setAttribute("data-i18n", ""); });
+
+    // ===== Start real-time post time updater (tiap detik) =====
+    setInterval(updateAllPostTimes, postTimeRefreshInterval);
+    // Update juga saat tab kembali aktif (browser bisa throttle interval di background)
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) updateAllPostTimes();
+    });
 
     if (window.lucide) lucide.createIcons();
   </script>
