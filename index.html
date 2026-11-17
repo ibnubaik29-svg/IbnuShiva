@@ -1918,9 +1918,8 @@
 
       const sep = "━━━━━━━━━━━━━━━";
 
-      let message = `Halo Kak 👋\n\n`;
-      message += `Saya memesan di *Jajanan Ibnu-Shiva* 🙏\n`;
-      message += `Berikut detail pesanan saya:\n\n`;
+      let message = `Asalamualaikum Kak🙏🏻\n\n`;
+      message += `Saya ingin memesan ${checkoutState.product.name}, \n\n`;
 
       message += `${sep}\n`;
       message += `🛒 *DETAIL PESANAN*\n`;
@@ -1960,7 +1959,6 @@
       message += `${sep}\n`;
       if (checkoutState.orderType === "diantar") {
         message += `Diantar ke Rumah\n`;
-        message += `Area: ${DELIVERY_AREA}\n`;
       } else {
         message += `Bayar / Ambil di Toko\n`;
       }
@@ -1975,9 +1973,7 @@
       }
 
       message += `\n${sep}\n`;
-      message += `Mohon dikonfirmasi ketersediaannya ya, Kak 🙏\n`;
-      message += `Terima kasih banyak atas pelayanannya ✨\n\n`;
-      message += `Salam hangat,\n*${buyerName}*`;
+      message += `Mohon dikonfirmasi ketersediaannya ya Kak🙏🏻`;
 
       const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
